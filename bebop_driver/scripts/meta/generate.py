@@ -273,11 +273,11 @@ def generate_states(xml_filename):
                 "cpp_class_param_name": cpp_class_param_name,
                 "topic_name": topic_name,
                 "latched": "true",
+                "cpp_class_msg_name": convert_to_snake_case(msg_name),
                 "cpp_class_msg_type": msg_name,
                 "key": cpp_class_dict_key,
                 "cpp_class_arg": deepcopy(arg_list)
                 })
-    print(d_msg)
     logging.info("... Done iterating, writing results to file")
     # .msg write
     # for k, d in d_msg.items():
@@ -379,7 +379,7 @@ def generate_settings(xml_filename):
             # cmd.attrib["name"] and cl.attrib["name"] are already in CamelCase
             cpp_class_name = cl.attrib["name"] + cmd.attrib["name"]
             cpp_class_comment = strip_text(cmd_comment)
-            cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr";
+            cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr"
             cpp_class_params = list()
 
             counter = 0
@@ -459,7 +459,7 @@ def generate_settings(xml_filename):
                         enum_cast = "static_cast<eARCOMMANDS_%s_%s_%s_%s>" % (project.upper(), cl.attrib["name"].upper(), cmd.attrib["name"].upper(), arg.attrib["name"].upper())
                     else:
                         enum_cast = ""
-
+                    print(arg.attrib["name"].upper())
                     cpp_class_params.append({
                         "cpp_class_arg_key": cpp_class_dict_key + "_" + arg.attrib["name"].upper(),
                         "cpp_class_param_name": arg_name,

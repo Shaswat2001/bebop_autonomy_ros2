@@ -166,131 +166,89 @@ boost::shared_ptr<cb::CommonRunStateRunIdChanged>
 #ifdef UPDTAE_CALLBACK_MAP
 // Instantiate state callback wrappers
 common_commonstate_allstateschanged_ptr.reset(
-  new cb::CommonCommonStateAllStatesChanged(
-    nh, priv_nh, "states/common/CommonState/AllStatesChanged"));
+  new cb::CommonCommonStateAllStatesChanged("states/common/CommonState/AllStatesChanged"));
 common_commonstate_batterystatechanged_ptr.reset(
-  new cb::CommonCommonStateBatteryStateChanged(
-    nh, priv_nh, "states/common/CommonState/BatteryStateChanged"));
+  new cb::CommonCommonStateBatteryStateChanged("states/common/CommonState/BatteryStateChanged"));
 common_commonstate_massstoragestatelistchanged_ptr.reset(
-  new cb::CommonCommonStateMassStorageStateListChanged(
-    nh, priv_nh, "states/common/CommonState/MassStorageStateListChanged"));
+  new cb::CommonCommonStateMassStorageStateListChanged("states/common/CommonState/MassStorageStateListChanged"));
 common_commonstate_massstorageinfostatelistchanged_ptr.reset(
-  new cb::CommonCommonStateMassStorageInfoStateListChanged(
-    nh, priv_nh, "states/common/CommonState/MassStorageInfoStateListChanged"));
+  new cb::CommonCommonStateMassStorageInfoStateListChanged("states/common/CommonState/MassStorageInfoStateListChanged"));
 common_commonstate_currentdatechanged_ptr.reset(
-  new cb::CommonCommonStateCurrentDateChanged(
-    nh, priv_nh, "states/common/CommonState/CurrentDateChanged"));
+  new cb::CommonCommonStateCurrentDateChanged("states/common/CommonState/CurrentDateChanged"));
 common_commonstate_currenttimechanged_ptr.reset(
-  new cb::CommonCommonStateCurrentTimeChanged(
-    nh, priv_nh, "states/common/CommonState/CurrentTimeChanged"));
+  new cb::CommonCommonStateCurrentTimeChanged("states/common/CommonState/CurrentTimeChanged"));
 common_commonstate_massstorageinforemaininglistchanged_ptr.reset(
-  new cb::CommonCommonStateMassStorageInfoRemainingListChanged(
-    nh, priv_nh, "states/common/CommonState/MassStorageInfoRemainingListChanged"));
+  new cb::CommonCommonStateMassStorageInfoRemainingListChanged("states/common/CommonState/MassStorageInfoRemainingListChanged"));
 common_commonstate_wifisignalchanged_ptr.reset(
-  new cb::CommonCommonStateWifiSignalChanged(
-    nh, priv_nh, "states/common/CommonState/WifiSignalChanged"));
+  new cb::CommonCommonStateWifiSignalChanged("states/common/CommonState/WifiSignalChanged"));
 common_commonstate_sensorsstateslistchanged_ptr.reset(
-  new cb::CommonCommonStateSensorsStatesListChanged(
-    nh, priv_nh, "states/common/CommonState/SensorsStatesListChanged"));
+  new cb::CommonCommonStateSensorsStatesListChanged("states/common/CommonState/SensorsStatesListChanged"));
 common_commonstate_productmodel_ptr.reset(
-  new cb::CommonCommonStateProductModel(
-    nh, priv_nh, "states/common/CommonState/ProductModel"));
+  new cb::CommonCommonStateProductModel("states/common/CommonState/ProductModel"));
 common_commonstate_countrylistknown_ptr.reset(
-  new cb::CommonCommonStateCountryListKnown(
-    nh, priv_nh, "states/common/CommonState/CountryListKnown"));
+  new cb::CommonCommonStateCountryListKnown("states/common/CommonState/CountryListKnown"));
 common_commonstate_deprecatedmassstoragecontentchanged_ptr.reset(
-  new cb::CommonCommonStateDeprecatedMassStorageContentChanged(
-    nh, priv_nh, "states/common/CommonState/DeprecatedMassStorageContentChanged"));
+  new cb::CommonCommonStateDeprecatedMassStorageContentChanged("states/common/CommonState/DeprecatedMassStorageContentChanged"));
 common_commonstate_massstoragecontent_ptr.reset(
-  new cb::CommonCommonStateMassStorageContent(
-    nh, priv_nh, "states/common/CommonState/MassStorageContent"));
+  new cb::CommonCommonStateMassStorageContent("states/common/CommonState/MassStorageContent"));
 common_commonstate_massstoragecontentforcurrentrun_ptr.reset(
-  new cb::CommonCommonStateMassStorageContentForCurrentRun(
-    nh, priv_nh, "states/common/CommonState/MassStorageContentForCurrentRun"));
+  new cb::CommonCommonStateMassStorageContentForCurrentRun("states/common/CommonState/MassStorageContentForCurrentRun"));
 common_commonstate_videorecordingtimestamp_ptr.reset(
-  new cb::CommonCommonStateVideoRecordingTimestamp(
-    nh, priv_nh, "states/common/CommonState/VideoRecordingTimestamp"));
+  new cb::CommonCommonStateVideoRecordingTimestamp("states/common/CommonState/VideoRecordingTimestamp"));
 common_overheatstate_overheatchanged_ptr.reset(
-  new cb::CommonOverHeatStateOverHeatChanged(
-    nh, priv_nh, "states/common/OverHeatState/OverHeatChanged"));
+  new cb::CommonOverHeatStateOverHeatChanged("states/common/OverHeatState/OverHeatChanged"));
 common_overheatstate_overheatregulationchanged_ptr.reset(
-  new cb::CommonOverHeatStateOverHeatRegulationChanged(
-    nh, priv_nh, "states/common/OverHeatState/OverHeatRegulationChanged"));
+  new cb::CommonOverHeatStateOverHeatRegulationChanged("states/common/OverHeatState/OverHeatRegulationChanged"));
 common_mavlinkstate_mavlinkfileplayingstatechanged_ptr.reset(
-  new cb::CommonMavlinkStateMavlinkFilePlayingStateChanged(
-    nh, priv_nh, "states/common/MavlinkState/MavlinkFilePlayingStateChanged"));
+  new cb::CommonMavlinkStateMavlinkFilePlayingStateChanged("states/common/MavlinkState/MavlinkFilePlayingStateChanged"));
 common_mavlinkstate_mavlinkplayerrorstatechanged_ptr.reset(
-  new cb::CommonMavlinkStateMavlinkPlayErrorStateChanged(
-    nh, priv_nh, "states/common/MavlinkState/MavlinkPlayErrorStateChanged"));
+  new cb::CommonMavlinkStateMavlinkPlayErrorStateChanged("states/common/MavlinkState/MavlinkPlayErrorStateChanged"));
 common_mavlinkstate_missionitemexecuted_ptr.reset(
-  new cb::CommonMavlinkStateMissionItemExecuted(
-    nh, priv_nh, "states/common/MavlinkState/MissionItemExecuted"));
+  new cb::CommonMavlinkStateMissionItemExecuted("states/common/MavlinkState/MissionItemExecuted"));
 common_calibrationstate_magnetocalibrationstatechanged_ptr.reset(
-  new cb::CommonCalibrationStateMagnetoCalibrationStateChanged(
-    nh, priv_nh, "states/common/CalibrationState/MagnetoCalibrationStateChanged"));
+  new cb::CommonCalibrationStateMagnetoCalibrationStateChanged("states/common/CalibrationState/MagnetoCalibrationStateChanged"));
 common_calibrationstate_magnetocalibrationrequiredstate_ptr.reset(
-  new cb::CommonCalibrationStateMagnetoCalibrationRequiredState(
-    nh, priv_nh, "states/common/CalibrationState/MagnetoCalibrationRequiredState"));
+  new cb::CommonCalibrationStateMagnetoCalibrationRequiredState("states/common/CalibrationState/MagnetoCalibrationRequiredState"));
 common_calibrationstate_magnetocalibrationaxistocalibratechanged_ptr.reset(
-  new cb::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged(
-    nh, priv_nh, "states/common/CalibrationState/MagnetoCalibrationAxisToCalibrateChanged"));
+  new cb::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged("states/common/CalibrationState/MagnetoCalibrationAxisToCalibrateChanged"));
 common_calibrationstate_magnetocalibrationstartedchanged_ptr.reset(
-  new cb::CommonCalibrationStateMagnetoCalibrationStartedChanged(
-    nh, priv_nh, "states/common/CalibrationState/MagnetoCalibrationStartedChanged"));
+  new cb::CommonCalibrationStateMagnetoCalibrationStartedChanged("states/common/CalibrationState/MagnetoCalibrationStartedChanged"));
 common_calibrationstate_pitotcalibrationstatechanged_ptr.reset(
-  new cb::CommonCalibrationStatePitotCalibrationStateChanged(
-    nh, priv_nh, "states/common/CalibrationState/PitotCalibrationStateChanged"));
+  new cb::CommonCalibrationStatePitotCalibrationStateChanged("states/common/CalibrationState/PitotCalibrationStateChanged"));
 common_flightplanstate_availabilitystatechanged_ptr.reset(
-  new cb::CommonFlightPlanStateAvailabilityStateChanged(
-    nh, priv_nh, "states/common/FlightPlanState/AvailabilityStateChanged"));
+  new cb::CommonFlightPlanStateAvailabilityStateChanged("states/common/FlightPlanState/AvailabilityStateChanged"));
 common_flightplanstate_componentstatelistchanged_ptr.reset(
-  new cb::CommonFlightPlanStateComponentStateListChanged(
-    nh, priv_nh, "states/common/FlightPlanState/ComponentStateListChanged"));
+  new cb::CommonFlightPlanStateComponentStateListChanged("states/common/FlightPlanState/ComponentStateListChanged"));
 common_flightplanstate_lockstatechanged_ptr.reset(
-  new cb::CommonFlightPlanStateLockStateChanged(
-    nh, priv_nh, "states/common/FlightPlanState/LockStateChanged"));
+  new cb::CommonFlightPlanStateLockStateChanged("states/common/FlightPlanState/LockStateChanged"));
 common_arlibsversionsstate_controllerlibarcommandsversion_ptr.reset(
-  new cb::CommonARLibsVersionsStateControllerLibARCommandsVersion(
-    nh, priv_nh, "states/common/ARLibsVersionsState/ControllerLibARCommandsVersion"));
+  new cb::CommonARLibsVersionsStateControllerLibARCommandsVersion("states/common/ARLibsVersionsState/ControllerLibARCommandsVersion"));
 common_arlibsversionsstate_skycontrollerlibarcommandsversion_ptr.reset(
-  new cb::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion(
-    nh, priv_nh, "states/common/ARLibsVersionsState/SkyControllerLibARCommandsVersion"));
+  new cb::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion("states/common/ARLibsVersionsState/SkyControllerLibARCommandsVersion"));
 common_arlibsversionsstate_devicelibarcommandsversion_ptr.reset(
-  new cb::CommonARLibsVersionsStateDeviceLibARCommandsVersion(
-    nh, priv_nh, "states/common/ARLibsVersionsState/DeviceLibARCommandsVersion"));
+  new cb::CommonARLibsVersionsStateDeviceLibARCommandsVersion("states/common/ARLibsVersionsState/DeviceLibARCommandsVersion"));
 common_audiostate_audiostreamingrunning_ptr.reset(
-  new cb::CommonAudioStateAudioStreamingRunning(
-    nh, priv_nh, "states/common/AudioState/AudioStreamingRunning"));
+  new cb::CommonAudioStateAudioStreamingRunning("states/common/AudioState/AudioStreamingRunning"));
 common_headlightsstate_intensitychanged_ptr.reset(
-  new cb::CommonHeadlightsStateintensityChanged(
-    nh, priv_nh, "states/common/HeadlightsState/intensityChanged"));
+  new cb::CommonHeadlightsStateintensityChanged("states/common/HeadlightsState/intensityChanged"));
 common_animationsstate_list_ptr.reset(
-  new cb::CommonAnimationsStateList(
-    nh, priv_nh, "states/common/AnimationsState/List"));
+  new cb::CommonAnimationsStateList("states/common/AnimationsState/List"));
 common_accessorystate_supportedaccessorieslistchanged_ptr.reset(
-  new cb::CommonAccessoryStateSupportedAccessoriesListChanged(
-    nh, priv_nh, "states/common/AccessoryState/SupportedAccessoriesListChanged"));
+  new cb::CommonAccessoryStateSupportedAccessoriesListChanged("states/common/AccessoryState/SupportedAccessoriesListChanged"));
 common_accessorystate_accessoryconfigchanged_ptr.reset(
-  new cb::CommonAccessoryStateAccessoryConfigChanged(
-    nh, priv_nh, "states/common/AccessoryState/AccessoryConfigChanged"));
+  new cb::CommonAccessoryStateAccessoryConfigChanged("states/common/AccessoryState/AccessoryConfigChanged"));
 common_accessorystate_accessoryconfigmodificationenabled_ptr.reset(
-  new cb::CommonAccessoryStateAccessoryConfigModificationEnabled(
-    nh, priv_nh, "states/common/AccessoryState/AccessoryConfigModificationEnabled"));
+  new cb::CommonAccessoryStateAccessoryConfigModificationEnabled("states/common/AccessoryState/AccessoryConfigModificationEnabled"));
 common_chargerstate_maxchargeratechanged_ptr.reset(
-  new cb::CommonChargerStateMaxChargeRateChanged(
-    nh, priv_nh, "states/common/ChargerState/MaxChargeRateChanged"));
+  new cb::CommonChargerStateMaxChargeRateChanged("states/common/ChargerState/MaxChargeRateChanged"));
 common_chargerstate_currentchargestatechanged_ptr.reset(
-  new cb::CommonChargerStateCurrentChargeStateChanged(
-    nh, priv_nh, "states/common/ChargerState/CurrentChargeStateChanged"));
+  new cb::CommonChargerStateCurrentChargeStateChanged("states/common/ChargerState/CurrentChargeStateChanged"));
 common_chargerstate_lastchargeratechanged_ptr.reset(
-  new cb::CommonChargerStateLastChargeRateChanged(
-    nh, priv_nh, "states/common/ChargerState/LastChargeRateChanged"));
+  new cb::CommonChargerStateLastChargeRateChanged("states/common/ChargerState/LastChargeRateChanged"));
 common_chargerstate_charginginfo_ptr.reset(
-  new cb::CommonChargerStateChargingInfo(
-    nh, priv_nh, "states/common/ChargerState/ChargingInfo"));
+  new cb::CommonChargerStateChargingInfo("states/common/ChargerState/ChargingInfo"));
 common_runstate_runidchanged_ptr.reset(
-  new cb::CommonRunStateRunIdChanged(
-    nh, priv_nh, "states/common/RunState/RunIdChanged"));
+  new cb::CommonRunStateRunIdChanged("states/common/RunState/RunIdChanged"));
 
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(

@@ -9,7 +9,7 @@ def convert_to_snake_case(s):
     return snake_case
 
 # Example usage:
-input_string1 = "ThisIsAnExampleString"
+input_string1 = "CommonAudioStateAudioStreamingRunning"
 output_string1 = convert_to_snake_case(input_string1)
 print(output_string1)  # Output: "this_is_an_example_string"
 

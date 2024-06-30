@@ -40,7 +40,7 @@ extern "C"
 }
 
 #include <bebop_driver/bebop.h>
-#include "bebop_driver/BebopArdrone3Config.h"
+#include "bebop_driver/bebop_driver.h"
 #include "bebop_driver/bebop_video_decoder.h"
 
 // include all callback wrappers

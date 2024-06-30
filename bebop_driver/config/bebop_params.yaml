@@ -1,0 +1,27 @@
+bebop_driver:
+  ros__parameters:
+    PilotingSettingsMaxAltitudeCurrent: 0.0
+    PilotingSettingsMaxTiltCurrent: 0.0
+    PilotingSettingsAbsolutControlOn: 0
+    PilotingSettingsMaxDistanceValue: 0.0
+    PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover: 0
+    PilotingSettingsBankedTurnValue: 0
+    PilotingSettingsMinAltitudeCurrent: 0.0
+    PilotingSettingsCirclingDirectionValue: 0
+    PilotingSettingsCirclingRadiusValue: 0
+    PilotingSettingsCirclingAltitudeValue: 0
+    PilotingSettingsPitchModeValue: 0
+    SpeedSettingsMaxVerticalSpeedCurrent: 0.0
+    SpeedSettingsMaxRotationSpeedCurrent: 0.0
+    SpeedSettingsHullProtectionPresent: 0
+    SpeedSettingsOutdoorOutdoor: 0
+    SpeedSettingsMaxPitchRollRotationSpeedCurrent: 0.0
+    NetworkSettingsWifiSelectionType: 0
+    NetworkSettingsWifiSelectionBand: 0
+    NetworkSettingsWifiSelectionChannel: 0
+    PictureSettingsVideoStabilizationModeMode: 0
+    PictureSettingsVideoRecordingModeMode: 0
+    PictureSettingsVideoFramerateFramerate: 0
+    PictureSettingsVideoResolutionsType: 0
+    GPSSettingsHomeTypeType: 0
+    GPSSettingsReturnHomeDelayDelay: 0

@@ -52,8 +52,7 @@ protected:
   mutable ::boost::mutex mutex_;
 
 public:
-  AbstractCommand(eARCONTROLLER_DICTIONARY_KEY cmd_key)
-    : cmd_key_(cmd_key), arg(NULL)
+  AbstractCommand(eARCONTROLLER_DICTIONARY_KEY cmd_key) : Node("callback_common"), cmd_key_(cmd_key), arg(NULL)
   {}
 
   virtual ~AbstractCommand()
