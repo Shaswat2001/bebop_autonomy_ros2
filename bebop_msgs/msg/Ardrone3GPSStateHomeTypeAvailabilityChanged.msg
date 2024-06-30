@@ -6,7 +6,7 @@
 #
 # SDK Comment: Home type availability.
 
-Header header
+std_msgs/Header header
 
 # The type of the return home
 uint8 TYPE_TAKEOFF=0  # The drone has enough information to return to the take off position

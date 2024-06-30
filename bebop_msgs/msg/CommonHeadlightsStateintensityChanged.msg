@@ -6,7 +6,7 @@
 #
 # SDK Comment: Lighting LEDs intensity.
 
-Header header
+std_msgs/Header header
 
 # The intensity value for the left LED (0 through 255).
 uint8 left

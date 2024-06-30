@@ -6,7 +6,7 @@
 #
 # SDK Comment: FlightPlan components state list.
 
-Header header
+std_msgs/Header header
 
 # Drone FlightPlan component id (unique)
 uint8 COMPONENT_GPS=0  # Drone GPS component. State is 0 when the drone needs a GPS fix.

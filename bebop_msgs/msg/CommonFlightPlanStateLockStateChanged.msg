@@ -6,7 +6,7 @@
 #
 # SDK Comment: FlightPlan lock state. Represents the fact that the controller is able or not to stop or pause a playing FlightPlan
 
-Header header
+std_msgs/Header header
 
 # 1 if FlightPlan is locked: cant pause or stop FlightPlan. 0 if FlightPlan is unlocked: pause or stop available.
 uint8 lock_state

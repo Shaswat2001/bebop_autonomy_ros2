@@ -6,7 +6,7 @@
 #
 # SDK Comment: Last charge rate.
 
-Header header
+std_msgs/Header header
 
 # The charge rate recorded by the firmware for the last charge.
 uint8 RATE_UNKNOWN=0  # The last charge rate is not known.

@@ -6,7 +6,7 @@
 #
 # SDK Comment: Mission item has been executed.
 
-Header header
+std_msgs/Header header
 
 # Index of the mission item. This is the place of the mission item in the list of the items of the mission. Begins at 0.
 uint32 idx

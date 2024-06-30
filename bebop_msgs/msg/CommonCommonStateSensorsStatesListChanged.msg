@@ -6,7 +6,7 @@
 #
 # SDK Comment: Sensors state list.
 
-Header header
+std_msgs/Header header
 
 # Sensor name
 uint8 SENSORNAME_IMU=0  # Inertial Measurement Unit sensor

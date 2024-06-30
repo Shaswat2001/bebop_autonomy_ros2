@@ -6,7 +6,7 @@
 #
 # SDK Comment: Paramaterless animations state list.
 
-Header header
+std_msgs/Header header
 
 # Animation type.
 uint8 ANIM_HEADLIGHTS_FLASH=0  # Flash headlights.

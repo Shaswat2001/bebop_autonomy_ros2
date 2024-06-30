@@ -6,7 +6,7 @@
 #
 # SDK Comment: Pro features.
 
-Header header
+std_msgs/Header header
 
 # Bitfield representing enabled features.
 uint64 features

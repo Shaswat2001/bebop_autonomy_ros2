@@ -6,7 +6,7 @@
 #
 # SDK Comment: Magneto calib process axis state.
 
-Header header
+std_msgs/Header header
 
 # State of the x axis (roll) calibration : 1 if calibration is done, 0 otherwise
 uint8 x_axis_calibration

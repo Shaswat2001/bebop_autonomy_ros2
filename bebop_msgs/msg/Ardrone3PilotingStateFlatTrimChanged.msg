@@ -6,5 +6,5 @@
 #
 # SDK Comment: Drone acknowledges that flat trim was correctly processed.
 
-Header header
+std_msgs/Header header
 

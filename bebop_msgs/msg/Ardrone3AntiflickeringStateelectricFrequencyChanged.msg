@@ -6,7 +6,7 @@
 #
 # SDK Comment: Electric frequency. This piece of information is used for the antiflickering when the [AntiflickeringMode](#1-30-1) is set to *auto*.
 
-Header header
+std_msgs/Header header
 
 # Type of the electric frequency
 uint8 FREQUENCY_FIFTYHERTZ=0  # Electric frequency of the country is 50hz

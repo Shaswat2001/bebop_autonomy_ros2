@@ -6,7 +6,7 @@
 #
 # SDK Comment: 
 
-Header header
+std_msgs/Header header
 
 # stream mode
 uint8 MODE_LOW_LATENCY=0  # Minimize latency with average reliability (best for piloting).

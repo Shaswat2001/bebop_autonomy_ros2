@@ -6,7 +6,7 @@
 #
 # SDK Comment: Drones location changed. This event is meant to replace [PositionChanged](#1-4-4).
 
-Header header
+std_msgs/Header header
 
 # Latitude location in decimal degrees (500.0 if not available)
 float64 latitude

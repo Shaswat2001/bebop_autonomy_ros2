@@ -6,7 +6,7 @@
 #
 # SDK Comment: Wifi scan results. Please note that the list is not complete until you receive the event [WifiScanEnded](#1-14-1).
 
-Header header
+std_msgs/Header header
 
 # SSID of the AP
 string ssid

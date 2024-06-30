@@ -6,5 +6,5 @@
 #
 # SDK Comment: Overheat temperature reached.
 
-Header header
+std_msgs/Header header
 

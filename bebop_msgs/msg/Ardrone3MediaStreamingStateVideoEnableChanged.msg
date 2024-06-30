@@ -6,7 +6,7 @@
 #
 # SDK Comment: Video stream state.
 
-Header header
+std_msgs/Header header
 
 # Current video streaming status.
 uint8 ENABLED_ENABLED=0  # Video streaming is enabled.

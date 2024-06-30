@@ -6,7 +6,7 @@
 #
 # SDK Comment: Battery state.
 
-Header header
+std_msgs/Header header
 
 # Battery percentage
 uint8 percent

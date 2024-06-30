@@ -6,7 +6,7 @@
 #
 # SDK Comment: Drones position changed.
 
-Header header
+std_msgs/Header header
 
 # Latitude position in decimal degrees (500.0 if not available)
 float64 latitude

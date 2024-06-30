@@ -6,7 +6,7 @@
 #
 # SDK Comment: Mass storage content for current run. Only counts the files related to the current run (see [RunId](#0-30-0))
 
-Header header
+std_msgs/Header header
 
 # Mass storage id (unique)
 uint8 mass_storage_id

@@ -6,5 +6,5 @@
 #
 # SDK Comment: All states have been sent. **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 
-Header header
+std_msgs/Header header
 

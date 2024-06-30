@@ -6,7 +6,7 @@
 #
 # SDK Comment: Supported accessories list.
 
-Header header
+std_msgs/Header header
 
 # Accessory configurations supported by the product.
 uint8 ACCESSORY_NO_ACCESSORY=0  # No accessory.

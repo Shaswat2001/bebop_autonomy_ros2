@@ -6,7 +6,7 @@
 #
 # SDK Comment: Overheat regulation type.
 
-Header header
+std_msgs/Header header
 
 # Type of overheat regulation : 0 for ventilation, 1 for switch off
 uint8 regulation_type

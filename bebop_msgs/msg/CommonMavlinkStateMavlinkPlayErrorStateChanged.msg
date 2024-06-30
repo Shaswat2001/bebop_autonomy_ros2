@@ -6,7 +6,7 @@
 #
 # SDK Comment: FlightPlan error.
 
-Header header
+std_msgs/Header header
 
 # State of play error
 uint8 ERROR_NONE=0  # There is no error

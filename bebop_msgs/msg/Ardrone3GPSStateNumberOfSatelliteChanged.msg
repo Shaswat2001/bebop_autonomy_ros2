@@ -6,7 +6,7 @@
 #
 # SDK Comment: Number of GPS satellites.
 
-Header header
+std_msgs/Header header
 
 # The number of satellite
 uint8 number_of_satellite

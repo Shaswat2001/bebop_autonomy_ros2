@@ -24,12 +24,11 @@ find_package(rosidl_default_generators REQUIRED)
 set(MSGS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/msg")
 file(GLOB PARROT_MSGS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${MSGS_DIR}/*.msg")
 
-
+MESSAGE( ${PARROT_MSGS})
 # Generate introspection typesupport for C and C++ and IDL files
 rosidl_generate_interfaces(${PROJECT_NAME}
 	${PARROT_MSGS}
-	DEPENDENCIES builtin_interfaces
-	ADD_LINTER_TESTS
+	DEPENDENCIES builtin_interfaces std_msgs
 )
 
 if(BUILD_TESTING)
@@ -43,8 +42,6 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-install(TARGETS
-  DESTINATION lib/${PROJECT_NAME}
-)
+ament_export_dependencies(rosidl_default_runtime)
 
 ament_package()

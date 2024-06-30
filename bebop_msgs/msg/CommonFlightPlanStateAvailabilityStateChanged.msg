@@ -6,7 +6,7 @@
 #
 # SDK Comment: FlightPlan availability. Availability is linked to GPS fix, magnetometer calibration, sensor states...
 
-Header header
+std_msgs/Header header
 
 # Running a flightPlan file is available (1 running a flightPlan file is available, otherwise 0)
 uint8 availability_state

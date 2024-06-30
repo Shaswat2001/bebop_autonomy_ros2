@@ -6,5 +6,5 @@
 #
 # SDK Comment: Wifi scan ended. When receiving this event, the list of [WifiScanResults](#1-14-0) is complete.
 
-Header header
+std_msgs/Header header
 

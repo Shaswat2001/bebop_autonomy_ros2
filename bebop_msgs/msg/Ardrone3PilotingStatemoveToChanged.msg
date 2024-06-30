@@ -6,7 +6,7 @@
 #
 # SDK Comment: The drone moves or moved to a given location.
 
-Header header
+std_msgs/Header header
 
 # Latitude of the location (in degrees) to reach
 float64 latitude

@@ -6,7 +6,7 @@
 #
 # SDK Comment: Antiflickering mode.
 
-Header header
+std_msgs/Header header
 
 # Mode of the anti flickering functionnality
 uint8 MODE_AUTO=0  # Anti flickering based on the electric frequency previously sent

@@ -6,5 +6,5 @@
 #
 # SDK Comment: Available wifi channels completed. When receiving this event, the list of [AvailableWifiChannels](#1-14-2) is complete.
 
-Header header
+std_msgs/Header header
 

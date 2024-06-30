@@ -6,7 +6,7 @@
 #
 # SDK Comment: Auto takeoff mode
 
-Header header
+std_msgs/Header header
 
 # State of automatic take off mode (1 if enabled)
 uint8 state

@@ -6,7 +6,7 @@
 #
 # SDK Comment: Picture state.
 
-Header header
+std_msgs/Header header
 
 # State of device picture recording
 uint8 STATE_READY=0  # The picture recording is ready

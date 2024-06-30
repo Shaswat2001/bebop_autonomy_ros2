@@ -6,7 +6,7 @@
 #
 # SDK Comment: Product sub-model. This can be used to customize the UI depending on the product.
 
-Header header
+std_msgs/Header header
 
 # The Model of the product.
 uint8 MODEL_RS_TRAVIS=0  # Travis (RS taxi) model.

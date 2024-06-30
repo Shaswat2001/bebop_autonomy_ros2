@@ -6,7 +6,7 @@
 #
 # SDK Comment: Flying state.
 
-Header header
+std_msgs/Header header
 
 # Drone flying state
 uint8 STATE_LANDED=0  # Landed state

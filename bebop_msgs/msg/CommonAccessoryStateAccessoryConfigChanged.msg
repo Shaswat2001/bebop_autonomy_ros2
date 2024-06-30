@@ -6,7 +6,7 @@
 #
 # SDK Comment: Accessory config.
 
-Header header
+std_msgs/Header header
 
 # Accessory configuration reported by firmware.
 uint8 NEWACCESSORY_UNCONFIGURED=0  # No accessory configuration set. Controller needs to set one.

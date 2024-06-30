@@ -6,7 +6,7 @@
 #
 # SDK Comment: Calibration required.
 
-Header header
+std_msgs/Header header
 
 # 1 if calibration is required, 0 if current calibration is still valid
 uint8 required

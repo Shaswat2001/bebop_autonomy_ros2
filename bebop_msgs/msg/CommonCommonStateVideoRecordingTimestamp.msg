@@ -6,7 +6,7 @@
 #
 # SDK Comment: Current or last video recording timestamp. Timestamp in milliseconds since 00:00:00 UTC on 1 January 1970. **Please note that values dont persist after drone reboot**
 
-Header header
+std_msgs/Header header
 
 # Timestamp in milliseconds since 00:00:00 UTC on 1 January 1970.
 uint64 start_timestamp

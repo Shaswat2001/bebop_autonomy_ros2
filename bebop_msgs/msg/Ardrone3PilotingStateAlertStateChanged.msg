@@ -6,7 +6,7 @@
 #
 # SDK Comment: Alert state.
 
-Header header
+std_msgs/Header header
 
 # Drone alert state
 uint8 STATE_NONE=0  # No alert

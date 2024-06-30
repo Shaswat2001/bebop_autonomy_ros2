@@ -6,7 +6,7 @@
 #
 # SDK Comment: Camera orientation with float arguments.
 
-Header header
+std_msgs/Header header
 
 # Tilt camera consign for the drone [deg]
 float32 tilt

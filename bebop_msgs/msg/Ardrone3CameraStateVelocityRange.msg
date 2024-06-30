@@ -6,7 +6,7 @@
 #
 # SDK Comment: Camera Orientation velocity limits.
 
-Header header
+std_msgs/Header header
 
 # Absolute max tilt velocity [deg/s]
 float32 max_tilt

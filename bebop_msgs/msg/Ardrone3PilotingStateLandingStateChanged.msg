@@ -6,7 +6,7 @@
 #
 # SDK Comment: Landing state. Only available for fixed wings (which have two landing modes).
 
-Header header
+std_msgs/Header header
 
 # Drone landing state
 uint8 STATE_LINEAR=0  # Linear landing

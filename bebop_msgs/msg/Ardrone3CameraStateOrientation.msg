@@ -6,7 +6,7 @@
 #
 # SDK Comment: Camera orientation.
 
-Header header
+std_msgs/Header header
 
 # Tilt camera consign for the drone [-100;100]
 int8 tilt

@@ -6,7 +6,7 @@
 #
 # SDK Comment: Available wifi channels. Please note that the list is not complete until you receive the event [AvailableWifiChannelsCompleted](#1-14-3).
 
-Header header
+std_msgs/Header header
 
 # The band of this channel : 2.4 GHz or 5 GHz
 uint8 BAND_2_4GHZ=0  # 2.4 GHz band

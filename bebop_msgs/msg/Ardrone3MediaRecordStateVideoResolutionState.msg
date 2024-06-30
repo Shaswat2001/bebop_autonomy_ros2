@@ -6,7 +6,7 @@
 #
 # SDK Comment: Video resolution. Informs about streaming and recording video resolutions. Note that this is only an indication about what the resolution should be. To know the real resolution, you should get it from the frame.
 
-Header header
+std_msgs/Header header
 
 # Streaming resolution
 uint8 STREAMING_RES360P=0  # 360p resolution.

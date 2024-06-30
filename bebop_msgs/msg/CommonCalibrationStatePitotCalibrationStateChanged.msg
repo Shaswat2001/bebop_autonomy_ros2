@@ -6,7 +6,7 @@
 #
 # SDK Comment: 
 
-Header header
+std_msgs/Header header
 
 # State of pitot calibration
 uint8 STATE_DONE=0  # Calibration is ok

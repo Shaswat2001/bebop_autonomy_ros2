@@ -6,7 +6,7 @@
 #
 # SDK Comment: Max charge rate.
 
-Header header
+std_msgs/Header header
 
 # The current maximum charge rate.
 uint8 RATE_SLOW=0  # Fully charge the battery at a slow rate. Typically limit max charge current to 512 mA.

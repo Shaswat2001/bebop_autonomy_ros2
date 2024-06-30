@@ -100,6 +100,13 @@ def get_xml_url(filename):
     return rend.render_path("templates/url.mustache",
         {"repo_owner": LIBARCOMMANDS_GIT_OWNER, "hash": LIBARCOMMANDS_GIT_HASH, "filename": filename})
 
+def change_msg_field_type(msg_type):
+
+    if msg_type == "Header":
+        msg_type = "std_msgs/Header"
+    
+    return msg_type
+
 def load_from_url(url):
     f = urlopen(url)
     data = f.read()
@@ -115,8 +122,6 @@ def is_settings_tag(name):
 def strip_text(text):
 
     text = re.sub("\s\s+", " ", text.strip().replace('\n', '').replace('\r', '')).replace('"', '').replace("'", "").replace('\\n', '')
-
-    print(text)
     return text
 
 def cap_word(text):
@@ -245,7 +250,6 @@ def generate_states(xml_filename):
                             "constant_comment": strip_text(enum.text)
                             })
                         counter += 1
-
                 d["msg_field"].append({
                     "msg_field_type": f_type,
                     "msg_field_name": convert_to_snake_case(f_name),

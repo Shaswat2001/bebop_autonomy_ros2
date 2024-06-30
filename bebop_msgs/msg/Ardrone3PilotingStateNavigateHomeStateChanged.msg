@@ -6,7 +6,7 @@
 #
 # SDK Comment: Return home state. Availability is related to gps fix, magnetometer calibration.
 
-Header header
+std_msgs/Header header
 
 # State of navigate home
 uint8 STATE_AVAILABLE=0  # Navigate home is available

@@ -6,7 +6,7 @@
 #
 # SDK Comment: Picture record state.
 
-Header header
+std_msgs/Header header
 
 # State of video
 uint8 STATE_STOPPED=0  # Video was stopped

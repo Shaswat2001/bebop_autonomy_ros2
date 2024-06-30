@@ -6,7 +6,7 @@
 #
 # SDK Comment: List of all connected accessories. This event presents the list of all connected accessories. To actually use the component, use the component dedicated feature.
 
-Header header
+std_msgs/Header header
 
 # Id of the accessory for the session.
 uint8 id

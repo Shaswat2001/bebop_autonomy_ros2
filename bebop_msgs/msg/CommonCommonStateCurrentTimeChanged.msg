@@ -6,7 +6,7 @@
 #
 # SDK Comment: Time changed. Corresponds to the latest time set on the drone. **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 
-Header header
+std_msgs/Header header
 
 # Time with ISO-8601 format
 string time

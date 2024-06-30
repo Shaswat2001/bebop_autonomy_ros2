@@ -6,7 +6,7 @@
 #
 # SDK Comment: 
 
-Header header
+std_msgs/Header header
 
 # version of libARCommands (1.2.3.4 format)
 string version

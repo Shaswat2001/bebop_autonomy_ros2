@@ -6,7 +6,7 @@
 #
 # SDK Comment: Axis to calibrate during calibration process.
 
-Header header
+std_msgs/Header header
 
 # The axis to calibrate
 uint8 AXIS_XAXIS=0  # If the current calibration axis should be the x axis

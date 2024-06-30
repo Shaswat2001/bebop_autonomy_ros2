@@ -6,7 +6,7 @@
 #
 # SDK Comment: Current run id. A run id is uniquely identifying a run or a flight. For each run is generated on the drone a file which can be used by Academy to sum up the run. Also, each medias taken during a run has a filename containing the run id.
 
-Header header
+std_msgs/Header header
 
 # Id of the run
 string run_id

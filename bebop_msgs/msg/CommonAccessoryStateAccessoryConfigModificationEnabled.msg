@@ -6,7 +6,7 @@
 #
 # SDK Comment: Availability to declare or not an accessory.
 
-Header header
+std_msgs/Header header
 
 # 1 if the modification of the accessory Config is enabled, 0 otherwise
 uint8 enabled

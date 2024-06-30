@@ -6,7 +6,7 @@
 #
 # SDK Comment: Home type. This choice is made by the drone, according to the [PreferredHomeType](#1-24-4) and the [HomeTypeAvailability](#1-31-1). The drone will choose the type matching with the user preference only if this type is available. If not, it will chose a type in this order: FOLLOWEE ; TAKEOFF ; PILOT ; FIRST_FIX
 
-Header header
+std_msgs/Header header
 
 # The type of the return home chosen
 uint8 TYPE_TAKEOFF=0  # The drone will return to the take off position

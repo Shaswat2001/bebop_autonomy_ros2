@@ -6,7 +6,7 @@
 #
 # SDK Comment: Playing state of a FlightPlan.
 
-Header header
+std_msgs/Header header
 
 # State of the mavlink
 uint8 STATE_PLAYING=0  # Mavlink file is playing

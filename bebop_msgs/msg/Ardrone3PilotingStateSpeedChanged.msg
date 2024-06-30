@@ -6,7 +6,7 @@
 #
 # SDK Comment: Drones speed changed. Expressed in the NED referential (North-East-Down).
 
-Header header
+std_msgs/Header header
 
 # Speed relative to the North (when drone moves to the north, speed is &gt; 0) (in m/s)
 float32 speed_x

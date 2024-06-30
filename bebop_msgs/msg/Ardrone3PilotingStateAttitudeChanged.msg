@@ -6,7 +6,7 @@
 #
 # SDK Comment: Drones attitude changed.
 
-Header header
+std_msgs/Header header
 
 # roll value (in radian)
 float32 roll

@@ -6,7 +6,7 @@
 #
 # SDK Comment: Drones altitude changed. The altitude reported is the altitude above the take off point. To get the altitude above sea level, see [PositionChanged](#1-4-4).
 
-Header header
+std_msgs/Header header
 
 # Altitude in meters
 float64 altitude

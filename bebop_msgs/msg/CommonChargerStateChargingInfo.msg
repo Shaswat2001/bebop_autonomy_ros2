@@ -6,7 +6,7 @@
 #
 # SDK Comment: Charging information.
 
-Header header
+std_msgs/Header header
 
 # The current charging phase.
 uint8 PHASE_UNKNOWN=0  # The charge phase is unknown or irrelevant.

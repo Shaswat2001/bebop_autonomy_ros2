@@ -6,7 +6,7 @@
 #
 # SDK Comment: Current charge state.
 
-Header header
+std_msgs/Header header
 
 # Charger status.
 uint8 STATUS_DISCHARGING=0  # The battery is discharging.

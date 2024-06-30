@@ -6,7 +6,7 @@
 #
 # SDK Comment: Mass storage info state list.
 
-Header header
+std_msgs/Header header
 
 # Mass storage state id (unique)
 uint8 mass_storage_id

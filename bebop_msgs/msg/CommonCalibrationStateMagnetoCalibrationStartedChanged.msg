@@ -6,7 +6,7 @@
 #
 # SDK Comment: Calibration process state.
 
-Header header
+std_msgs/Header header
 
 # 1 if calibration has started, 0 otherwise
 uint8 started

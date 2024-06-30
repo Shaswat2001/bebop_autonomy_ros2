@@ -6,7 +6,7 @@
 #
 # SDK Comment: Orientation of the center of the camera. This is the value to send when you want to center the camera.
 
-Header header
+std_msgs/Header header
 
 # Tilt value [deg]
 float32 tilt

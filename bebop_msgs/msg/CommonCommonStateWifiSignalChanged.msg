@@ -6,7 +6,7 @@
 #
 # SDK Comment: Rssi (Wifi Signal between controller and product) changed.
 
-Header header
+std_msgs/Header header
 
 # RSSI of the signal between controller and the product (in dbm)
 int16 rssi

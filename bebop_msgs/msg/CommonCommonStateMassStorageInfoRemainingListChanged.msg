@@ -6,7 +6,7 @@
 #
 # SDK Comment: Mass storage remaining data list.
 
-Header header
+std_msgs/Header header
 
 # Mass storage free space in MBytes
 uint32 free_space

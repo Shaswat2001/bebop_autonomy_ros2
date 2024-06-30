@@ -6,7 +6,7 @@
 #
 # SDK Comment: Drones air speed changed Expressed in the drones referential.
 
-Header header
+std_msgs/Header header
 
 # Speed relative to air on x axis (speed is always &gt; 0) (in m/s)
 float32 air_speed

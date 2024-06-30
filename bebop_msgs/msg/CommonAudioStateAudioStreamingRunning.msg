@@ -6,7 +6,7 @@
 #
 # SDK Comment: Audio stream direction.
 
-Header header
+std_msgs/Header header
 
 # Bit field for TX and RX running bit 0 is 1 if Drone TX is running bit 1 is 1 if Drone RX is running
 uint8 running
