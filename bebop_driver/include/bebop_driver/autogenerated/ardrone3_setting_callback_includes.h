@@ -85,29 +85,29 @@ boost::shared_ptr<cb::GPSSettingsReturnHomeDelay> ardrone3_gpssettings_returnhom
 
 #ifdef UPDTAE_CALLBACK_MAP
 // Instantiate state callback wrappers
-ardrone3_pilotingsettings_maxaltitude_ptr.reset(new cb::PilotingSettingsMaxAltitude);
-ardrone3_pilotingsettings_maxtilt_ptr.reset(new cb::PilotingSettingsMaxTilt);
-ardrone3_pilotingsettings_absolutcontrol_ptr.reset(new cb::PilotingSettingsAbsolutControl);
-ardrone3_pilotingsettings_maxdistance_ptr.reset(new cb::PilotingSettingsMaxDistance);
-ardrone3_pilotingsettings_noflyovermaxdistance_ptr.reset(new cb::PilotingSettingsNoFlyOverMaxDistance);
-ardrone3_pilotingsettings_bankedturn_ptr.reset(new cb::PilotingSettingsBankedTurn);
-ardrone3_pilotingsettings_minaltitude_ptr.reset(new cb::PilotingSettingsMinAltitude);
-ardrone3_pilotingsettings_circlingdirection_ptr.reset(new cb::PilotingSettingsCirclingDirection);
-ardrone3_pilotingsettings_circlingradius_ptr.reset(new cb::PilotingSettingsCirclingRadius);
-ardrone3_pilotingsettings_circlingaltitude_ptr.reset(new cb::PilotingSettingsCirclingAltitude);
-ardrone3_pilotingsettings_pitchmode_ptr.reset(new cb::PilotingSettingsPitchMode);
-ardrone3_speedsettings_maxverticalspeed_ptr.reset(new cb::SpeedSettingsMaxVerticalSpeed);
-ardrone3_speedsettings_maxrotationspeed_ptr.reset(new cb::SpeedSettingsMaxRotationSpeed);
-ardrone3_speedsettings_hullprotection_ptr.reset(new cb::SpeedSettingsHullProtection);
-ardrone3_speedsettings_outdoor_ptr.reset(new cb::SpeedSettingsOutdoor);
-ardrone3_speedsettings_maxpitchrollrotationspeed_ptr.reset(new cb::SpeedSettingsMaxPitchRollRotationSpeed);
-ardrone3_networksettings_wifiselection_ptr.reset(new cb::NetworkSettingsWifiSelection);
-ardrone3_picturesettings_videostabilizationmode_ptr.reset(new cb::PictureSettingsVideoStabilizationMode);
-ardrone3_picturesettings_videorecordingmode_ptr.reset(new cb::PictureSettingsVideoRecordingMode);
-ardrone3_picturesettings_videoframerate_ptr.reset(new cb::PictureSettingsVideoFramerate);
-ardrone3_picturesettings_videoresolutions_ptr.reset(new cb::PictureSettingsVideoResolutions);
-ardrone3_gpssettings_hometype_ptr.reset(new cb::GPSSettingsHomeType);
-ardrone3_gpssettings_returnhomedelay_ptr.reset(new cb::GPSSettingsReturnHomeDelay);
+ardrone3_pilotingsettings_maxaltitude_ptr.reset(new cb::PilotingSettingsMaxAltitude(priv_nh));
+ardrone3_pilotingsettings_maxtilt_ptr.reset(new cb::PilotingSettingsMaxTilt(priv_nh));
+ardrone3_pilotingsettings_absolutcontrol_ptr.reset(new cb::PilotingSettingsAbsolutControl(priv_nh));
+ardrone3_pilotingsettings_maxdistance_ptr.reset(new cb::PilotingSettingsMaxDistance(priv_nh));
+ardrone3_pilotingsettings_noflyovermaxdistance_ptr.reset(new cb::PilotingSettingsNoFlyOverMaxDistance(priv_nh));
+ardrone3_pilotingsettings_bankedturn_ptr.reset(new cb::PilotingSettingsBankedTurn(priv_nh));
+ardrone3_pilotingsettings_minaltitude_ptr.reset(new cb::PilotingSettingsMinAltitude(priv_nh));
+ardrone3_pilotingsettings_circlingdirection_ptr.reset(new cb::PilotingSettingsCirclingDirection(priv_nh));
+ardrone3_pilotingsettings_circlingradius_ptr.reset(new cb::PilotingSettingsCirclingRadius(priv_nh));
+ardrone3_pilotingsettings_circlingaltitude_ptr.reset(new cb::PilotingSettingsCirclingAltitude(priv_nh));
+ardrone3_pilotingsettings_pitchmode_ptr.reset(new cb::PilotingSettingsPitchMode(priv_nh));
+ardrone3_speedsettings_maxverticalspeed_ptr.reset(new cb::SpeedSettingsMaxVerticalSpeed(priv_nh));
+ardrone3_speedsettings_maxrotationspeed_ptr.reset(new cb::SpeedSettingsMaxRotationSpeed(priv_nh));
+ardrone3_speedsettings_hullprotection_ptr.reset(new cb::SpeedSettingsHullProtection(priv_nh));
+ardrone3_speedsettings_outdoor_ptr.reset(new cb::SpeedSettingsOutdoor(priv_nh));
+ardrone3_speedsettings_maxpitchrollrotationspeed_ptr.reset(new cb::SpeedSettingsMaxPitchRollRotationSpeed(priv_nh));
+ardrone3_networksettings_wifiselection_ptr.reset(new cb::NetworkSettingsWifiSelection(priv_nh));
+ardrone3_picturesettings_videostabilizationmode_ptr.reset(new cb::PictureSettingsVideoStabilizationMode(priv_nh));
+ardrone3_picturesettings_videorecordingmode_ptr.reset(new cb::PictureSettingsVideoRecordingMode(priv_nh));
+ardrone3_picturesettings_videoframerate_ptr.reset(new cb::PictureSettingsVideoFramerate(priv_nh));
+ardrone3_picturesettings_videoresolutions_ptr.reset(new cb::PictureSettingsVideoResolutions(priv_nh));
+ardrone3_gpssettings_hometype_ptr.reset(new cb::GPSSettingsHomeType(priv_nh));
+ardrone3_gpssettings_returnhomedelay_ptr.reset(new cb::GPSSettingsReturnHomeDelay(priv_nh));
 
 // Add all wrappers to the callback map (AbstractCommand* part of each object)
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(

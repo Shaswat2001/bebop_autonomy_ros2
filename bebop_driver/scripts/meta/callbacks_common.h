@@ -1,7 +1,7 @@
 /**
 Software License Agreement (BSD)
 
-\file      {{project}}_setting_callback_includes.h
+\file      bebop_common_commands.h
 \authors   Mani Monajjemi <mmonajje@sfu.ca>
 \copyright Copyright (c) 2015, Autonomy Lab (Simon Fraser University), All rights reserved.
 
@@ -22,37 +22,79 @@ OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTE
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- * {{project}}_setting_callback_includes.h
- * auto-generated from {{url}}
+ * bebop_common_commands.h
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/ardrone3.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
+#ifndef BEBOP_COMMON_COMMANDS_H
+#define BEBOP_COMMON_COMMANDS_H
 
-#ifdef FORWARD_DECLARATIONS
+#include <string>
+#include <rclcpp/rclcpp.hpp>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/lock_guard.hpp>
+
+namespace bebop_driver
+{
+
+// Forward decl
+class BebopArdrone3Config;
+
 namespace cb
 {
-{{#cpp_class}}
-  class {{cpp_class_name}};
-{{/cpp_class}}
+
+/* Base class for All SDK Commands */
+class AbstractCommand : public rclcpp::Node
+{
+protected:
+  eARCONTROLLER_DICTIONARY_KEY cmd_key_;
+  ARCONTROLLER_DICTIONARY_ARG_t* arg;
+  mutable ::boost::mutex mutex_;
+
+public:
+  AbstractCommand(eARCONTROLLER_DICTIONARY_KEY cmd_key)
+    : cmd_key_(cmd_key), arg(NULL)
+  {}
+
+  virtual ~AbstractCommand()
+  {}
+
+  inline eARCONTROLLER_DICTIONARY_KEY GetCommandKey() const {return cmd_key_;}
+
+  virtual void Update(const ARCONTROLLER_DICTIONARY_ARG_t* arg, const rclcpp::Time& t) = 0;
+};
+
+// This is not yet abstract
+class AbstractState : public AbstractCommand
+{
+protected:
+  bool pub_enabled_;
+
+public:
+  AbstractState(eARCONTROLLER_DICTIONARY_KEY cmd_key, const bool pub_enabled = false)
+    : AbstractCommand(cmd_key), pub_enabled_(pub_enabled)
+  {}
+
+  virtual ~AbstractState()
+  {}
+};
+
+class AbstractSetting: public AbstractCommand
+{
+
+public:
+  AbstractSetting(eARCONTROLLER_DICTIONARY_KEY cmd_key)
+    : AbstractCommand(cmd_key)
+  {}
+
+  virtual ~AbstractSetting()
+  {}
+
+  virtual void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_) = 0;
+
+};
+
 }  // namespace cb
-#endif  // FORWARD_DECLARATIONS
+}  // namespace bebop_driver
 
-#ifdef DEFINE_SHARED_PTRS
-// Define all callback wrappers
-{{#cpp_class}}
-boost::shared_ptr<cb::{{cpp_class_name}}> {{cpp_class_instance_name}};
-{{/cpp_class}}
-#endif  // DEFINE_SHARED_PTRS
-
-#ifdef UPDTAE_CALLBACK_MAP
-// Instantiate state callback wrappers
-{{#cpp_class}}
-{{cpp_class_instance_name}}.reset(new cb::{{cpp_class_name}});
-{{/cpp_class}}
-
-// Add all wrappers to the callback map (AbstractCommand* part of each object)
-{{#cpp_class}}
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
-                      {{cpp_class_instance_name}}->GetCommandKey(),
-                      {{cpp_class_instance_name}}));
-{{/cpp_class}}
-#endif  // UPDTAE_CALLBACK_MAP
+#endif  // BEBOP_COMMON_COMMANDS_H

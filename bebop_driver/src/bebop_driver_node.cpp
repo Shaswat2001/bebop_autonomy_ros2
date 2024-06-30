@@ -1,7 +1,7 @@
 /**
 Software License Agreement (BSD)
 
-\file      {{project}}_setting_callback_includes.h
+\file      bebop_driver_node.cpp
 \authors   Mani Monajjemi <mmonajje@sfu.ca>
 \copyright Copyright (c) 2015, Autonomy Lab (Simon Fraser University), All rights reserved.
 
@@ -21,38 +21,36 @@ DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
 OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+#include <string>
+#include <vector>
+#include <algorithm>
 
- * {{project}}_setting_callback_includes.h
- * auto-generated from {{url}}
- * Do not modify this file by hand. Check scripts/meta folder for generator files.
- */
+#include <ros/ros.h>
+#include <nodelet/loader.h>
 
-#ifdef FORWARD_DECLARATIONS
-namespace cb
+int main(int argc, char* argv[])
 {
-{{#cpp_class}}
-  class {{cpp_class_name}};
-{{/cpp_class}}
-}  // namespace cb
-#endif  // FORWARD_DECLARATIONS
+  ros::init(argc, argv, "bebop_driver_node", ros::init_options::NoSigintHandler);
+  nodelet::Loader nll;
 
-#ifdef DEFINE_SHARED_PTRS
-// Define all callback wrappers
-{{#cpp_class}}
-boost::shared_ptr<cb::{{cpp_class_name}}> {{cpp_class_instance_name}};
-{{/cpp_class}}
-#endif  // DEFINE_SHARED_PTRS
+  nodelet::M_string remap(ros::names::getRemappings());
+  nodelet::V_string nargv;
+  const std::string nl_name = ros::this_node::getName();
+  nll.load(nl_name, "bebop_driver/BebopDriverNodelet", remap, nargv);
 
-#ifdef UPDTAE_CALLBACK_MAP
-// Instantiate state callback wrappers
-{{#cpp_class}}
-{{cpp_class_instance_name}}.reset(new cb::{{cpp_class_name}});
-{{/cpp_class}}
+  const std::vector<std::string>& loaded_nodelets = nll.listLoadedNodelets();
+  if (std::find(loaded_nodelets.begin(),
+                loaded_nodelets.end(),
+                nl_name) == loaded_nodelets.end())
+  {
+    // Nodelet OnInit() failed
+    ROS_FATAL("bebop_driver nodelet failed to load.");
+    return 1;
+  }
 
-// Add all wrappers to the callback map (AbstractCommand* part of each object)
-{{#cpp_class}}
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
-                      {{cpp_class_instance_name}}->GetCommandKey(),
-                      {{cpp_class_instance_name}}));
-{{/cpp_class}}
-#endif  // UPDTAE_CALLBACK_MAP
+  // It reaches here when OnInit() succeeds
+  ROS_INFO("bebop_driver nodelet loaded.");
+  ros::spin();
+  return 0;
+}

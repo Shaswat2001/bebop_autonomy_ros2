@@ -40,7 +40,7 @@ extern "C"
 #include "bebop_driver/BebopArdrone3Config.h"
 
 {{#cpp_class}}
-#include "bebop_msgs/{{cpp_class_msg_type}}.h"
+#include "bebop_msgs/msg/{{cpp_class_msg_type}}.hpp"
 {{/cpp_class}}
 
 namespace bebop_driver
@@ -58,13 +58,14 @@ private:
 
 public:
 
-  {{cpp_class_name}}(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+  {{cpp_class_name}}(const ::std::string& topic)
     : AbstractState({{key}})
   {
-    if (priv_nh.getParam("{{cpp_class_param_name}}", pub_enabled_) && pub_enabled_)
+    pub_enabled_ = this->get_parameter("{{cpp_class_param_name}}")
+    if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = nh.advertise<bebop_msgs::{{cpp_class_msg_type}}>(topic, {{queue_size}}, {{latched}});
+      ros_pub_ = this->create_publisher<bebop_msgs::{{cpp_class_msg_type}}>(topic, {{queue_size}}, {{latched}});
     } // pub_enabled_ is false
   }
 
@@ -74,7 +75,7 @@ public:
     return msg_ptr;
   }
 
-  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const rclcpp::Time& t)
   {
     if (arguments == NULL)
     {

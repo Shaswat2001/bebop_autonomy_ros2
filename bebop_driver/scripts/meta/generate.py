@@ -280,11 +280,11 @@ def generate_states(xml_filename):
     print(d_msg)
     logging.info("... Done iterating, writing results to file")
     # .msg write
-    for k, d in d_msg.items():
-        msg_filename = "%s.msg" % k
-        logging.info("Writing %s" % (msg_filename, ))
-        with open(msg_filename, "w") as msg_file:
-            msg_file.write(rend.render_path("templates/msg.mustache", d))
+    # for k, d in d_msg.items():
+    #     msg_filename = "%s.msg" % k
+    #     logging.info("Writing %s" % (msg_filename, ))
+    #     with open(msg_filename, "w") as msg_file:
+    #         msg_file.write(rend.render_path("templates/msg.mustache", d))
 
     header_file_name = "%s_state_callbacks.h" % (project.lower(), )
     logging.info("Writing %s" % (header_file_name, ))
