@@ -265,7 +265,6 @@ def generate_states(xml_filename):
                     })
 
             d_msg[msg_name] = deepcopy(d)
-
             # C++ class
             d_cpp["cpp_class"].append({
                 "cpp_class_name": cpp_class_name,
@@ -278,7 +277,7 @@ def generate_states(xml_filename):
                 "key": cpp_class_dict_key,
                 "cpp_class_arg": deepcopy(arg_list)
                 })
-
+    print(d_msg)
     logging.info("... Done iterating, writing results to file")
     # .msg write
     for k, d in d_msg.items():
