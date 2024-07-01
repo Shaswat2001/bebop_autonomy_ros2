@@ -15,8 +15,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(parrot_arsdk REQUIRED)
@@ -45,6 +43,7 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 include_directories(include 
                     ${ARSDK_INCLUDE_DIR}
                     ${Boost_INCLUDE_DIRS}
+                    /home/shaswatgarg/bebop_ws/install/parrot_arsdk/include
                     ${AVCODEC_INCLUDE_DIRS}
                     ${AVFORMAT_INCLUDE_DIRS}
                     ${SWSCALE_INCLUDE_DIRS})
@@ -55,6 +54,7 @@ target_link_libraries(bebop
                       ${catkin_LIBRARIES}
                       ${Boost_LIBRARIES}
                       ${ARSDK_LIBS}
+                      /home/shaswatgarg/bebop_ws/install/parrot_arsdk/lib/parrot_arsdk
                       ${AVCODEC_LIBRARIES}
                       ${AVFORMAT_LIBRARIES}
                       ${SWSCALE_LIBRARIES})
