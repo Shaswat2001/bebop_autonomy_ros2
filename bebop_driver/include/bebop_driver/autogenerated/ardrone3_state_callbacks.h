@@ -70,10 +70,10 @@ extern "C"
 #include "bebop_msgs/msg/ardrone3_camera_state_velocity_range.hpp"
 #include "bebop_msgs/msg/ardrone3_antiflickering_stateelectric_frequency_changed.hpp"
 #include "bebop_msgs/msg/ardrone3_antiflickering_statemode_changed.hpp"
-#include "bebop_msgs/msg/ardrone3_g_p_s_state_number_of_satellite_changed.hpp"
-#include "bebop_msgs/msg/ardrone3_g_p_s_state_home_type_availability_changed.hpp"
-#include "bebop_msgs/msg/ardrone3_g_p_s_state_home_type_chosen_changed.hpp"
-#include "bebop_msgs/msg/ardrone3_p_r_o_state_features.hpp"
+#include "bebop_msgs/msg/ardrone3_gps_state_number_of_satellite_changed.hpp"
+#include "bebop_msgs/msg/ardrone3_gps_state_home_type_availability_changed.hpp"
+#include "bebop_msgs/msg/ardrone3_gps_state_home_type_chosen_changed.hpp"
+#include "bebop_msgs/msg/ardrone3_pro_state_features.hpp"
 #include "bebop_msgs/msg/ardrone3_accessory_state_connected_accessories.hpp"
 
 namespace bebop_driver
@@ -86,22 +86,30 @@ namespace cb
 class Ardrone3MediaRecordStatePictureStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3MediaRecordStatePictureStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChanged>::SharedPtr ros_pub_;
 
   Ardrone3MediaRecordStatePictureStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mediarecordstate_picturestatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_mediarecordstate_picturestatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3MediaRecordStatePictureStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3MediaRecordStatePictureStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -116,7 +124,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3MediaRecordStatePictureStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -135,7 +143,7 @@ public:
       msg_ptr->mass_storage_id = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStatePictureStateChanged
@@ -145,22 +153,30 @@ public:
 class Ardrone3MediaRecordStateVideoStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3MediaRecordStateVideoStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChanged>::SharedPtr ros_pub_;
 
   Ardrone3MediaRecordStateVideoStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mediarecordstate_videostatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_mediarecordstate_videostatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3MediaRecordStateVideoStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3MediaRecordStateVideoStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -175,7 +191,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3MediaRecordStateVideoStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -194,7 +210,7 @@ public:
       msg_ptr->mass_storage_id = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStateVideoStateChanged
@@ -204,22 +220,30 @@ public:
 class Ardrone3MediaRecordStatePictureStateChangedV2 : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3MediaRecordStatePictureStateChangedV2::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChangedV2::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChangedV2>::SharedPtr ros_pub_;
 
   Ardrone3MediaRecordStatePictureStateChangedV2(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mediarecordstate_picturestatechangedv2")
+    std::string parameter_value = this->get_parameter("states/enable_mediarecordstate_picturestatechangedv2").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3MediaRecordStatePictureStateChangedV2>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChangedV2>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3MediaRecordStatePictureStateChangedV2::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChangedV2::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -234,7 +258,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3MediaRecordStatePictureStateChangedV2());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3MediaRecordStatePictureStateChangedV2());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -253,7 +277,7 @@ public:
       msg_ptr->error = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStatePictureStateChangedV2
@@ -263,22 +287,30 @@ public:
 class Ardrone3MediaRecordStateVideoStateChangedV2 : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3MediaRecordStateVideoStateChangedV2::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChangedV2::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChangedV2>::SharedPtr ros_pub_;
 
   Ardrone3MediaRecordStateVideoStateChangedV2(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mediarecordstate_videostatechangedv2")
+    std::string parameter_value = this->get_parameter("states/enable_mediarecordstate_videostatechangedv2").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3MediaRecordStateVideoStateChangedV2>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChangedV2>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3MediaRecordStateVideoStateChangedV2::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChangedV2::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -293,7 +325,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3MediaRecordStateVideoStateChangedV2());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3MediaRecordStateVideoStateChangedV2());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -312,7 +344,7 @@ public:
       msg_ptr->error = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStateVideoStateChangedV2
@@ -322,22 +354,30 @@ public:
 class Ardrone3MediaRecordStateVideoResolutionState : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3MediaRecordStateVideoResolutionState::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3MediaRecordStateVideoResolutionState::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3MediaRecordStateVideoResolutionState>::SharedPtr ros_pub_;
 
   Ardrone3MediaRecordStateVideoResolutionState(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEORESOLUTIONSTATE)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mediarecordstate_videoresolutionstate")
+    std::string parameter_value = this->get_parameter("states/enable_mediarecordstate_videoresolutionstate").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3MediaRecordStateVideoResolutionState>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3MediaRecordStateVideoResolutionState>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3MediaRecordStateVideoResolutionState::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3MediaRecordStateVideoResolutionState::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -352,7 +392,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3MediaRecordStateVideoResolutionState());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3MediaRecordStateVideoResolutionState());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -371,7 +411,7 @@ public:
       msg_ptr->recording = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStateVideoResolutionState
@@ -381,22 +421,30 @@ public:
 class Ardrone3PilotingStateFlatTrimChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateFlatTrimChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateFlatTrimChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateFlatTrimChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateFlatTrimChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLATTRIMCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_flattrimchanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_flattrimchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateFlatTrimChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateFlatTrimChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateFlatTrimChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateFlatTrimChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -411,12 +459,12 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateFlatTrimChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateFlatTrimChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateFlatTrimChanged
@@ -426,22 +474,30 @@ public:
 class Ardrone3PilotingStateFlyingStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateFlyingStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateFlyingStateChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateFlyingStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_flyingstatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_flyingstatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateFlyingStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateFlyingStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -456,7 +512,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateFlyingStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateFlyingStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -468,7 +524,7 @@ public:
       msg_ptr->state = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateFlyingStateChanged
@@ -478,22 +534,30 @@ public:
 class Ardrone3PilotingStateAlertStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateAlertStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateAlertStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateAlertStateChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateAlertStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALERTSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_alertstatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_alertstatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateAlertStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateAlertStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateAlertStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateAlertStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -508,7 +572,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateAlertStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateAlertStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -520,7 +584,7 @@ public:
       msg_ptr->state = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAlertStateChanged
@@ -530,22 +594,30 @@ public:
 class Ardrone3PilotingStateNavigateHomeStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateNavigateHomeStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateNavigateHomeStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateNavigateHomeStateChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateNavigateHomeStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_navigatehomestatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_navigatehomestatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateNavigateHomeStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateNavigateHomeStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateNavigateHomeStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateNavigateHomeStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -560,7 +632,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateNavigateHomeStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateNavigateHomeStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -579,7 +651,7 @@ public:
       msg_ptr->reason = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateNavigateHomeStateChanged
@@ -589,22 +661,30 @@ public:
 class Ardrone3PilotingStatePositionChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStatePositionChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStatePositionChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStatePositionChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStatePositionChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_positionchanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_positionchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStatePositionChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStatePositionChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStatePositionChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -619,7 +699,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStatePositionChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStatePositionChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -645,7 +725,7 @@ public:
       msg_ptr->altitude = arg->value.Double;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStatePositionChanged
@@ -655,22 +735,30 @@ public:
 class Ardrone3PilotingStateSpeedChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateSpeedChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateSpeedChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateSpeedChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateSpeedChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_speedchanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_speedchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateSpeedChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateSpeedChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateSpeedChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateSpeedChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -685,7 +773,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateSpeedChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateSpeedChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -694,24 +782,24 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDX, arg);
     if (arg)
     {
-      msg_ptr->speedX = arg->value.Float;
+      msg_ptr->speed_x = arg->value.Float;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDY, arg);
     if (arg)
     {
-      msg_ptr->speedY = arg->value.Float;
+      msg_ptr->speed_y = arg->value.Float;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDZ, arg);
     if (arg)
     {
-      msg_ptr->speedZ = arg->value.Float;
+      msg_ptr->speed_z = arg->value.Float;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateSpeedChanged
@@ -721,22 +809,30 @@ public:
 class Ardrone3PilotingStateAttitudeChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateAttitudeChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateAttitudeChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateAttitudeChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateAttitudeChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_attitudechanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_attitudechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateAttitudeChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateAttitudeChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateAttitudeChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateAttitudeChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -751,7 +847,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateAttitudeChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateAttitudeChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -777,7 +873,7 @@ public:
       msg_ptr->yaw = arg->value.Float;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAttitudeChanged
@@ -787,22 +883,30 @@ public:
 class Ardrone3PilotingStateAutoTakeOffModeChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateAutoTakeOffModeChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateAutoTakeOffModeChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateAutoTakeOffModeChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_autotakeoffmodechanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_autotakeoffmodechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateAutoTakeOffModeChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateAutoTakeOffModeChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -817,7 +921,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateAutoTakeOffModeChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -829,7 +933,7 @@ public:
       msg_ptr->state = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAutoTakeOffModeChanged
@@ -839,22 +943,30 @@ public:
 class Ardrone3PilotingStateAltitudeChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateAltitudeChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateAltitudeChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateAltitudeChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateAltitudeChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALTITUDECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_altitudechanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_altitudechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateAltitudeChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateAltitudeChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateAltitudeChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateAltitudeChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -869,7 +981,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateAltitudeChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateAltitudeChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -881,7 +993,7 @@ public:
       msg_ptr->altitude = arg->value.Double;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAltitudeChanged
@@ -891,22 +1003,30 @@ public:
 class Ardrone3PilotingStateGpsLocationChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateGpsLocationChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateGpsLocationChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateGpsLocationChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateGpsLocationChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_GPSLOCATIONCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_gpslocationchanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_gpslocationchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateGpsLocationChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateGpsLocationChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateGpsLocationChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateGpsLocationChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -921,7 +1041,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateGpsLocationChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateGpsLocationChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -968,7 +1088,7 @@ public:
       msg_ptr->altitude_accuracy = arg->value.I8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateGpsLocationChanged
@@ -978,22 +1098,30 @@ public:
 class Ardrone3PilotingStateLandingStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateLandingStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateLandingStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateLandingStateChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateLandingStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_LANDINGSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_landingstatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_landingstatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateLandingStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateLandingStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateLandingStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateLandingStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1008,7 +1136,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateLandingStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateLandingStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1020,7 +1148,7 @@ public:
       msg_ptr->state = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateLandingStateChanged
@@ -1030,22 +1158,30 @@ public:
 class Ardrone3PilotingStateAirSpeedChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStateAirSpeedChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStateAirSpeedChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStateAirSpeedChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStateAirSpeedChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AIRSPEEDCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_airspeedchanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_airspeedchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStateAirSpeedChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStateAirSpeedChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStateAirSpeedChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStateAirSpeedChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1060,7 +1196,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateAirSpeedChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStateAirSpeedChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1069,10 +1205,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AIRSPEEDCHANGED_AIRSPEED, arg);
     if (arg)
     {
-      msg_ptr->airSpeed = arg->value.Float;
+      msg_ptr->air_speed = arg->value.Float;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAirSpeedChanged
@@ -1082,22 +1218,30 @@ public:
 class Ardrone3PilotingStatemoveToChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PilotingStatemoveToChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PilotingStatemoveToChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PilotingStatemoveToChanged>::SharedPtr ros_pub_;
 
   Ardrone3PilotingStatemoveToChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOVETOCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_pilotingstate_movetochanged")
+    std::string parameter_value = this->get_parameter("states/enable_pilotingstate_movetochanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PilotingStatemoveToChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PilotingStatemoveToChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PilotingStatemoveToChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PilotingStatemoveToChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1112,7 +1256,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStatemoveToChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PilotingStatemoveToChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1159,7 +1303,7 @@ public:
       msg_ptr->status = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PilotingStatemoveToChanged
@@ -1169,22 +1313,30 @@ public:
 class Ardrone3NetworkStateWifiScanListChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3NetworkStateWifiScanListChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3NetworkStateWifiScanListChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3NetworkStateWifiScanListChanged>::SharedPtr ros_pub_;
 
   Ardrone3NetworkStateWifiScanListChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_networkstate_wifiscanlistchanged")
+    std::string parameter_value = this->get_parameter("states/enable_networkstate_wifiscanlistchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3NetworkStateWifiScanListChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3NetworkStateWifiScanListChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3NetworkStateWifiScanListChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3NetworkStateWifiScanListChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1199,7 +1351,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3NetworkStateWifiScanListChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3NetworkStateWifiScanListChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1232,7 +1384,7 @@ public:
       msg_ptr->channel = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3NetworkStateWifiScanListChanged
@@ -1242,22 +1394,30 @@ public:
 class Ardrone3NetworkStateAllWifiScanChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3NetworkStateAllWifiScanChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3NetworkStateAllWifiScanChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3NetworkStateAllWifiScanChanged>::SharedPtr ros_pub_;
 
   Ardrone3NetworkStateAllWifiScanChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_ALLWIFISCANCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_networkstate_allwifiscanchanged")
+    std::string parameter_value = this->get_parameter("states/enable_networkstate_allwifiscanchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3NetworkStateAllWifiScanChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3NetworkStateAllWifiScanChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3NetworkStateAllWifiScanChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3NetworkStateAllWifiScanChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1272,12 +1432,12 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3NetworkStateAllWifiScanChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3NetworkStateAllWifiScanChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3NetworkStateAllWifiScanChanged
@@ -1287,22 +1447,30 @@ public:
 class Ardrone3NetworkStateWifiAuthChannelListChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3NetworkStateWifiAuthChannelListChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3NetworkStateWifiAuthChannelListChanged>::SharedPtr ros_pub_;
 
   Ardrone3NetworkStateWifiAuthChannelListChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_networkstate_wifiauthchannellistchanged")
+    std::string parameter_value = this->get_parameter("states/enable_networkstate_wifiauthchannellistchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3NetworkStateWifiAuthChannelListChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3NetworkStateWifiAuthChannelListChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1317,7 +1485,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3NetworkStateWifiAuthChannelListChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1343,7 +1511,7 @@ public:
       msg_ptr->in_or_out = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3NetworkStateWifiAuthChannelListChanged
@@ -1353,22 +1521,30 @@ public:
 class Ardrone3NetworkStateAllWifiAuthChannelChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3NetworkStateAllWifiAuthChannelChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3NetworkStateAllWifiAuthChannelChanged>::SharedPtr ros_pub_;
 
   Ardrone3NetworkStateAllWifiAuthChannelChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_ALLWIFIAUTHCHANNELCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_networkstate_allwifiauthchannelchanged")
+    std::string parameter_value = this->get_parameter("states/enable_networkstate_allwifiauthchannelchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3NetworkStateAllWifiAuthChannelChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3NetworkStateAllWifiAuthChannelChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1383,12 +1559,12 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3NetworkStateAllWifiAuthChannelChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3NetworkStateAllWifiAuthChannelChanged
@@ -1398,22 +1574,30 @@ public:
 class Ardrone3MediaStreamingStateVideoEnableChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3MediaStreamingStateVideoEnableChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3MediaStreamingStateVideoEnableChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3MediaStreamingStateVideoEnableChanged>::SharedPtr ros_pub_;
 
   Ardrone3MediaStreamingStateVideoEnableChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mediastreamingstate_videoenablechanged")
+    std::string parameter_value = this->get_parameter("states/enable_mediastreamingstate_videoenablechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3MediaStreamingStateVideoEnableChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3MediaStreamingStateVideoEnableChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3MediaStreamingStateVideoEnableChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3MediaStreamingStateVideoEnableChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1428,7 +1612,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3MediaStreamingStateVideoEnableChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3MediaStreamingStateVideoEnableChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1440,7 +1624,7 @@ public:
       msg_ptr->enabled = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3MediaStreamingStateVideoEnableChanged
@@ -1450,22 +1634,30 @@ public:
 class Ardrone3MediaStreamingStateVideoStreamModeChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3MediaStreamingStateVideoStreamModeChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3MediaStreamingStateVideoStreamModeChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3MediaStreamingStateVideoStreamModeChanged>::SharedPtr ros_pub_;
 
   Ardrone3MediaStreamingStateVideoStreamModeChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOSTREAMMODECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mediastreamingstate_videostreammodechanged")
+    std::string parameter_value = this->get_parameter("states/enable_mediastreamingstate_videostreammodechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3MediaStreamingStateVideoStreamModeChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3MediaStreamingStateVideoStreamModeChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3MediaStreamingStateVideoStreamModeChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3MediaStreamingStateVideoStreamModeChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1480,7 +1672,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3MediaStreamingStateVideoStreamModeChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3MediaStreamingStateVideoStreamModeChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1492,7 +1684,7 @@ public:
       msg_ptr->mode = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3MediaStreamingStateVideoStreamModeChanged
@@ -1502,22 +1694,30 @@ public:
 class Ardrone3CameraStateOrientation : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3CameraStateOrientation::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3CameraStateOrientation::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3CameraStateOrientation>::SharedPtr ros_pub_;
 
   Ardrone3CameraStateOrientation(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION)
   {
-    pub_enabled_ = this->get_parameter("states/enable_camerastate_orientation")
+    std::string parameter_value = this->get_parameter("states/enable_camerastate_orientation").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3CameraStateOrientation>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3CameraStateOrientation>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3CameraStateOrientation::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3CameraStateOrientation::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1532,7 +1732,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStateOrientation());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3CameraStateOrientation());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1551,7 +1751,7 @@ public:
       msg_ptr->pan = arg->value.I8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3CameraStateOrientation
@@ -1561,22 +1761,30 @@ public:
 class Ardrone3CameraStatedefaultCameraOrientation : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientation::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientation>::SharedPtr ros_pub_;
 
   Ardrone3CameraStatedefaultCameraOrientation(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION)
   {
-    pub_enabled_ = this->get_parameter("states/enable_camerastate_defaultcameraorientation")
+    std::string parameter_value = this->get_parameter("states/enable_camerastate_defaultcameraorientation").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientation>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientation::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1591,7 +1799,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientation());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1610,7 +1818,7 @@ public:
       msg_ptr->pan = arg->value.I8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3CameraStatedefaultCameraOrientation
@@ -1620,22 +1828,30 @@ public:
 class Ardrone3CameraStateOrientationV2 : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3CameraStateOrientationV2::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3CameraStateOrientationV2::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3CameraStateOrientationV2>::SharedPtr ros_pub_;
 
   Ardrone3CameraStateOrientationV2(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATIONV2)
   {
-    pub_enabled_ = this->get_parameter("states/enable_camerastate_orientationv2")
+    std::string parameter_value = this->get_parameter("states/enable_camerastate_orientationv2").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3CameraStateOrientationV2>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3CameraStateOrientationV2>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3CameraStateOrientationV2::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3CameraStateOrientationV2::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1650,7 +1866,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStateOrientationV2());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3CameraStateOrientationV2());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1669,7 +1885,7 @@ public:
       msg_ptr->pan = arg->value.Float;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3CameraStateOrientationV2
@@ -1679,22 +1895,30 @@ public:
 class Ardrone3CameraStatedefaultCameraOrientationV2 : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientationV2::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientationV2::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientationV2>::SharedPtr ros_pub_;
 
   Ardrone3CameraStatedefaultCameraOrientationV2(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATIONV2)
   {
-    pub_enabled_ = this->get_parameter("states/enable_camerastate_defaultcameraorientationv2")
+    std::string parameter_value = this->get_parameter("states/enable_camerastate_defaultcameraorientationv2").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3CameraStatedefaultCameraOrientationV2>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientationV2>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientationV2::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientationV2::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1709,7 +1933,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientationV2());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3CameraStatedefaultCameraOrientationV2());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1728,7 +1952,7 @@ public:
       msg_ptr->pan = arg->value.Float;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3CameraStatedefaultCameraOrientationV2
@@ -1738,22 +1962,30 @@ public:
 class Ardrone3CameraStateVelocityRange : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3CameraStateVelocityRange::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3CameraStateVelocityRange::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3CameraStateVelocityRange>::SharedPtr ros_pub_;
 
   Ardrone3CameraStateVelocityRange(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_VELOCITYRANGE)
   {
-    pub_enabled_ = this->get_parameter("states/enable_camerastate_velocityrange")
+    std::string parameter_value = this->get_parameter("states/enable_camerastate_velocityrange").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3CameraStateVelocityRange>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3CameraStateVelocityRange>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3CameraStateVelocityRange::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3CameraStateVelocityRange::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1768,7 +2000,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStateVelocityRange());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3CameraStateVelocityRange());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1787,7 +2019,7 @@ public:
       msg_ptr->max_pan = arg->value.Float;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3CameraStateVelocityRange
@@ -1797,22 +2029,30 @@ public:
 class Ardrone3AntiflickeringStateelectricFrequencyChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3AntiflickeringStateelectricFrequencyChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3AntiflickeringStateelectricFrequencyChanged>::SharedPtr ros_pub_;
 
   Ardrone3AntiflickeringStateelectricFrequencyChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_antiflickeringstate_electricfrequencychanged")
+    std::string parameter_value = this->get_parameter("states/enable_antiflickeringstate_electricfrequencychanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3AntiflickeringStateelectricFrequencyChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3AntiflickeringStateelectricFrequencyChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1827,7 +2067,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3AntiflickeringStateelectricFrequencyChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1839,7 +2079,7 @@ public:
       msg_ptr->frequency = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3AntiflickeringStateelectricFrequencyChanged
@@ -1849,22 +2089,30 @@ public:
 class Ardrone3AntiflickeringStatemodeChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3AntiflickeringStatemodeChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3AntiflickeringStatemodeChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3AntiflickeringStatemodeChanged>::SharedPtr ros_pub_;
 
   Ardrone3AntiflickeringStatemodeChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_antiflickeringstate_modechanged")
+    std::string parameter_value = this->get_parameter("states/enable_antiflickeringstate_modechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3AntiflickeringStatemodeChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3AntiflickeringStatemodeChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3AntiflickeringStatemodeChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3AntiflickeringStatemodeChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1879,7 +2127,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3AntiflickeringStatemodeChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3AntiflickeringStatemodeChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1891,7 +2139,7 @@ public:
       msg_ptr->mode = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3AntiflickeringStatemodeChanged
@@ -1901,22 +2149,30 @@ public:
 class Ardrone3GPSStateNumberOfSatelliteChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3GPSStateNumberOfSatelliteChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3GPSStateNumberOfSatelliteChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3GPSStateNumberOfSatelliteChanged>::SharedPtr ros_pub_;
 
   Ardrone3GPSStateNumberOfSatelliteChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_gpsstate_numberofsatellitechanged")
+    std::string parameter_value = this->get_parameter("states/enable_gpsstate_numberofsatellitechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3GPSStateNumberOfSatelliteChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3GPSStateNumberOfSatelliteChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3GPSStateNumberOfSatelliteChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3GPSStateNumberOfSatelliteChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1931,7 +2187,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3GPSStateNumberOfSatelliteChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3GPSStateNumberOfSatelliteChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1940,10 +2196,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED_NUMBEROFSATELLITE, arg);
     if (arg)
     {
-      msg_ptr->numberOfSatellite = arg->value.U8;
+      msg_ptr->number_of_satellite = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3GPSStateNumberOfSatelliteChanged
@@ -1953,22 +2209,30 @@ public:
 class Ardrone3GPSStateHomeTypeAvailabilityChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3GPSStateHomeTypeAvailabilityChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3GPSStateHomeTypeAvailabilityChanged>::SharedPtr ros_pub_;
 
   Ardrone3GPSStateHomeTypeAvailabilityChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_gpsstate_hometypeavailabilitychanged")
+    std::string parameter_value = this->get_parameter("states/enable_gpsstate_hometypeavailabilitychanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3GPSStateHomeTypeAvailabilityChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3GPSStateHomeTypeAvailabilityChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1983,7 +2247,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3GPSStateHomeTypeAvailabilityChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2002,7 +2266,7 @@ public:
       msg_ptr->available = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3GPSStateHomeTypeAvailabilityChanged
@@ -2012,22 +2276,30 @@ public:
 class Ardrone3GPSStateHomeTypeChosenChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3GPSStateHomeTypeChosenChanged::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3GPSStateHomeTypeChosenChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3GPSStateHomeTypeChosenChanged>::SharedPtr ros_pub_;
 
   Ardrone3GPSStateHomeTypeChosenChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPECHOSENCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_gpsstate_hometypechosenchanged")
+    std::string parameter_value = this->get_parameter("states/enable_gpsstate_hometypechosenchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3GPSStateHomeTypeChosenChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3GPSStateHomeTypeChosenChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3GPSStateHomeTypeChosenChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3GPSStateHomeTypeChosenChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2042,7 +2314,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3GPSStateHomeTypeChosenChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3GPSStateHomeTypeChosenChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2054,7 +2326,7 @@ public:
       msg_ptr->type = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3GPSStateHomeTypeChosenChanged
@@ -2064,22 +2336,30 @@ public:
 class Ardrone3PROStateFeatures : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3PROStateFeatures::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3PROStateFeatures::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3PROStateFeatures>::SharedPtr ros_pub_;
 
   Ardrone3PROStateFeatures(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES)
   {
-    pub_enabled_ = this->get_parameter("states/enable_prostate_features")
+    std::string parameter_value = this->get_parameter("states/enable_prostate_features").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3PROStateFeatures>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3PROStateFeatures>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3PROStateFeatures::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3PROStateFeatures::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2094,7 +2374,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3PROStateFeatures());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3PROStateFeatures());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2106,7 +2386,7 @@ public:
       msg_ptr->features = arg->value.U64;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3PROStateFeatures
@@ -2116,22 +2396,30 @@ public:
 class Ardrone3AccessoryStateConnectedAccessories : public AbstractState
 {
 private:
-  ::bebop_msgs::Ardrone3AccessoryStateConnectedAccessories::Ptr msg_ptr;
+  bebop_msgs::msg::Ardrone3AccessoryStateConnectedAccessories::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::Ardrone3AccessoryStateConnectedAccessories>::SharedPtr ros_pub_;
 
   Ardrone3AccessoryStateConnectedAccessories(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES)
   {
-    pub_enabled_ = this->get_parameter("states/enable_accessorystate_connectedaccessories")
+    std::string parameter_value = this->get_parameter("states/enable_accessorystate_connectedaccessories").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::Ardrone3AccessoryStateConnectedAccessories>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::Ardrone3AccessoryStateConnectedAccessories>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::Ardrone3AccessoryStateConnectedAccessories::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::Ardrone3AccessoryStateConnectedAccessories::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2146,7 +2434,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::Ardrone3AccessoryStateConnectedAccessories());
+    msg_ptr.reset(new ::bebop_msgs::msg::Ardrone3AccessoryStateConnectedAccessories());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2176,17 +2464,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES_SWVERSION, arg);
     if (arg)
     {
-      msg_ptr->swVersion = arg->value.String;
+      msg_ptr->sw_version = arg->value.String;
     }
 
-    arg = NULL;
-    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES_LIST_FLAGS, arg);
-    if (arg)
-    {
-      msg_ptr->list_flags = arg->value.U8;
-    }
-
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // Ardrone3AccessoryStateConnectedAccessories

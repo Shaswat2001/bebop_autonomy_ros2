@@ -67,9 +67,9 @@ extern "C"
 #include "bebop_msgs/msg/common_flight_plan_state_availability_state_changed.hpp"
 #include "bebop_msgs/msg/common_flight_plan_state_component_state_list_changed.hpp"
 #include "bebop_msgs/msg/common_flight_plan_state_lock_state_changed.hpp"
-#include "bebop_msgs/msg/common_a_r_libs_versions_state_controller_lib_a_r_commands_version.hpp"
-#include "bebop_msgs/msg/common_a_r_libs_versions_state_sky_controller_lib_a_r_commands_version.hpp"
-#include "bebop_msgs/msg/common_a_r_libs_versions_state_device_lib_a_r_commands_version.hpp"
+#include "bebop_msgs/msg/common_ar_libs_versions_state_controller_lib_ar_commands_version.hpp"
+#include "bebop_msgs/msg/common_ar_libs_versions_state_sky_controller_lib_ar_commands_version.hpp"
+#include "bebop_msgs/msg/common_ar_libs_versions_state_device_lib_ar_commands_version.hpp"
 #include "bebop_msgs/msg/common_audio_state_audio_streaming_running.hpp"
 #include "bebop_msgs/msg/common_headlights_stateintensity_changed.hpp"
 #include "bebop_msgs/msg/common_animations_state_list.hpp"
@@ -92,22 +92,30 @@ namespace cb
 class CommonCommonStateAllStatesChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateAllStatesChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateAllStatesChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateAllStatesChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateAllStatesChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_ALLSTATESCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_allstateschanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_allstateschanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateAllStatesChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateAllStatesChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateAllStatesChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateAllStatesChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -122,12 +130,12 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateAllStatesChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateAllStatesChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateAllStatesChanged
@@ -137,22 +145,30 @@ public:
 class CommonCommonStateBatteryStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateBatteryStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateBatteryStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateBatteryStateChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateBatteryStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_batterystatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_batterystatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateBatteryStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateBatteryStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateBatteryStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateBatteryStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -167,7 +183,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateBatteryStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateBatteryStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -179,7 +195,7 @@ public:
       msg_ptr->percent = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateBatteryStateChanged
@@ -189,22 +205,30 @@ public:
 class CommonCommonStateMassStorageStateListChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateMassStorageStateListChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateMassStorageStateListChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateMassStorageStateListChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateMassStorageStateListChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_massstoragestatelistchanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_massstoragestatelistchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateMassStorageStateListChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateMassStorageStateListChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateMassStorageStateListChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateMassStorageStateListChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -219,7 +243,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateMassStorageStateListChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateMassStorageStateListChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -238,7 +262,7 @@ public:
       msg_ptr->name = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateMassStorageStateListChanged
@@ -248,22 +272,30 @@ public:
 class CommonCommonStateMassStorageInfoStateListChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateMassStorageInfoStateListChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateMassStorageInfoStateListChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateMassStorageInfoStateListChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateMassStorageInfoStateListChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_massstorageinfostatelistchanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_massstorageinfostatelistchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateMassStorageInfoStateListChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateMassStorageInfoStateListChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateMassStorageInfoStateListChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateMassStorageInfoStateListChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -278,7 +310,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateMassStorageInfoStateListChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateMassStorageInfoStateListChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -325,7 +357,7 @@ public:
       msg_ptr->internal = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateMassStorageInfoStateListChanged
@@ -335,22 +367,30 @@ public:
 class CommonCommonStateCurrentDateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateCurrentDateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateCurrentDateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateCurrentDateChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateCurrentDateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTDATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_currentdatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_currentdatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateCurrentDateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateCurrentDateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateCurrentDateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateCurrentDateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -365,7 +405,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateCurrentDateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateCurrentDateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -377,7 +417,7 @@ public:
       msg_ptr->date = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateCurrentDateChanged
@@ -387,22 +427,30 @@ public:
 class CommonCommonStateCurrentTimeChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateCurrentTimeChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateCurrentTimeChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateCurrentTimeChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateCurrentTimeChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTTIMECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_currenttimechanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_currenttimechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateCurrentTimeChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateCurrentTimeChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateCurrentTimeChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateCurrentTimeChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -417,7 +465,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateCurrentTimeChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateCurrentTimeChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -429,7 +477,7 @@ public:
       msg_ptr->time = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateCurrentTimeChanged
@@ -439,22 +487,30 @@ public:
 class CommonCommonStateMassStorageInfoRemainingListChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateMassStorageInfoRemainingListChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateMassStorageInfoRemainingListChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateMassStorageInfoRemainingListChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateMassStorageInfoRemainingListChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_massstorageinforemaininglistchanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_massstorageinforemaininglistchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateMassStorageInfoRemainingListChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateMassStorageInfoRemainingListChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateMassStorageInfoRemainingListChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateMassStorageInfoRemainingListChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -469,7 +525,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateMassStorageInfoRemainingListChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateMassStorageInfoRemainingListChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -495,7 +551,7 @@ public:
       msg_ptr->photo_remaining = arg->value.U32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateMassStorageInfoRemainingListChanged
@@ -505,22 +561,30 @@ public:
 class CommonCommonStateWifiSignalChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateWifiSignalChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateWifiSignalChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateWifiSignalChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateWifiSignalChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_WIFISIGNALCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_wifisignalchanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_wifisignalchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateWifiSignalChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateWifiSignalChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateWifiSignalChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateWifiSignalChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -535,7 +599,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateWifiSignalChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateWifiSignalChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -547,7 +611,7 @@ public:
       msg_ptr->rssi = arg->value.I16;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateWifiSignalChanged
@@ -557,22 +621,30 @@ public:
 class CommonCommonStateSensorsStatesListChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateSensorsStatesListChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateSensorsStatesListChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateSensorsStatesListChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateSensorsStatesListChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_sensorsstateslistchanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_sensorsstateslistchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateSensorsStatesListChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateSensorsStatesListChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateSensorsStatesListChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateSensorsStatesListChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -587,7 +659,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateSensorsStatesListChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateSensorsStatesListChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -596,17 +668,17 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME, arg);
     if (arg)
     {
-      msg_ptr->sensorName = arg->value.I32;
+      msg_ptr->sensor_name = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORSTATE, arg);
     if (arg)
     {
-      msg_ptr->sensorState = arg->value.U8;
+      msg_ptr->sensor_state = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateSensorsStatesListChanged
@@ -616,22 +688,30 @@ public:
 class CommonCommonStateProductModel : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateProductModel::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateProductModel::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateProductModel>::SharedPtr ros_pub_;
 
   CommonCommonStateProductModel(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_productmodel")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_productmodel").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateProductModel>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateProductModel>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateProductModel::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateProductModel::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -646,7 +726,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateProductModel());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateProductModel());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -658,7 +738,7 @@ public:
       msg_ptr->model = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateProductModel
@@ -668,22 +748,30 @@ public:
 class CommonCommonStateCountryListKnown : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateCountryListKnown::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateCountryListKnown::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateCountryListKnown>::SharedPtr ros_pub_;
 
   CommonCommonStateCountryListKnown(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_countrylistknown")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_countrylistknown").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateCountryListKnown>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateCountryListKnown>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateCountryListKnown::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateCountryListKnown::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -698,7 +786,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateCountryListKnown());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateCountryListKnown());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -707,17 +795,17 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS, arg);
     if (arg)
     {
-      msg_ptr->listFlags = arg->value.U8;
+      msg_ptr->list_flags = arg->value.U8;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES, arg);
     if (arg)
     {
-      msg_ptr->countryCodes = arg->value.String;
+      msg_ptr->country_codes = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateCountryListKnown
@@ -727,22 +815,30 @@ public:
 class CommonCommonStateDeprecatedMassStorageContentChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateDeprecatedMassStorageContentChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateDeprecatedMassStorageContentChanged>::SharedPtr ros_pub_;
 
   CommonCommonStateDeprecatedMassStorageContentChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_deprecatedmassstoragecontentchanged")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_deprecatedmassstoragecontentchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateDeprecatedMassStorageContentChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateDeprecatedMassStorageContentChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -757,7 +853,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateDeprecatedMassStorageContentChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -773,31 +869,31 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_NBPHOTOS, arg);
     if (arg)
     {
-      msg_ptr->nbPhotos = arg->value.U16;
+      msg_ptr->nb_photos = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_NBVIDEOS, arg);
     if (arg)
     {
-      msg_ptr->nbVideos = arg->value.U16;
+      msg_ptr->nb_videos = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_NBPUDS, arg);
     if (arg)
     {
-      msg_ptr->nbPuds = arg->value.U16;
+      msg_ptr->nb_puds = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_NBCRASHLOGS, arg);
     if (arg)
     {
-      msg_ptr->nbCrashLogs = arg->value.U16;
+      msg_ptr->nb_crash_logs = arg->value.U16;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateDeprecatedMassStorageContentChanged
@@ -807,22 +903,30 @@ public:
 class CommonCommonStateMassStorageContent : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateMassStorageContent::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateMassStorageContent::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateMassStorageContent>::SharedPtr ros_pub_;
 
   CommonCommonStateMassStorageContent(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_massstoragecontent")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_massstoragecontent").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateMassStorageContent>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateMassStorageContent>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateMassStorageContent::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateMassStorageContent::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -837,7 +941,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateMassStorageContent());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateMassStorageContent());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -853,38 +957,38 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBPHOTOS, arg);
     if (arg)
     {
-      msg_ptr->nbPhotos = arg->value.U16;
+      msg_ptr->nb_photos = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBVIDEOS, arg);
     if (arg)
     {
-      msg_ptr->nbVideos = arg->value.U16;
+      msg_ptr->nb_videos = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBPUDS, arg);
     if (arg)
     {
-      msg_ptr->nbPuds = arg->value.U16;
+      msg_ptr->nb_puds = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBCRASHLOGS, arg);
     if (arg)
     {
-      msg_ptr->nbCrashLogs = arg->value.U16;
+      msg_ptr->nb_crash_logs = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBRAWPHOTOS, arg);
     if (arg)
     {
-      msg_ptr->nbRawPhotos = arg->value.U16;
+      msg_ptr->nb_raw_photos = arg->value.U16;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateMassStorageContent
@@ -894,22 +998,30 @@ public:
 class CommonCommonStateMassStorageContentForCurrentRun : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateMassStorageContentForCurrentRun::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateMassStorageContentForCurrentRun>::SharedPtr ros_pub_;
 
   CommonCommonStateMassStorageContentForCurrentRun(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_massstoragecontentforcurrentrun")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_massstoragecontentforcurrentrun").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateMassStorageContentForCurrentRun>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateMassStorageContentForCurrentRun::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -924,7 +1036,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateMassStorageContentForCurrentRun());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -940,24 +1052,24 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN_NBPHOTOS, arg);
     if (arg)
     {
-      msg_ptr->nbPhotos = arg->value.U16;
+      msg_ptr->nb_photos = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN_NBVIDEOS, arg);
     if (arg)
     {
-      msg_ptr->nbVideos = arg->value.U16;
+      msg_ptr->nb_videos = arg->value.U16;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN_NBRAWPHOTOS, arg);
     if (arg)
     {
-      msg_ptr->nbRawPhotos = arg->value.U16;
+      msg_ptr->nb_raw_photos = arg->value.U16;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateMassStorageContentForCurrentRun
@@ -967,22 +1079,30 @@ public:
 class CommonCommonStateVideoRecordingTimestamp : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCommonStateVideoRecordingTimestamp::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCommonStateVideoRecordingTimestamp::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCommonStateVideoRecordingTimestamp>::SharedPtr ros_pub_;
 
   CommonCommonStateVideoRecordingTimestamp(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_VIDEORECORDINGTIMESTAMP)
   {
-    pub_enabled_ = this->get_parameter("states/enable_commonstate_videorecordingtimestamp")
+    std::string parameter_value = this->get_parameter("states/enable_commonstate_videorecordingtimestamp").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCommonStateVideoRecordingTimestamp>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCommonStateVideoRecordingTimestamp>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCommonStateVideoRecordingTimestamp::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCommonStateVideoRecordingTimestamp::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -997,7 +1117,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateVideoRecordingTimestamp());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCommonStateVideoRecordingTimestamp());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1006,17 +1126,17 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_VIDEORECORDINGTIMESTAMP_STARTTIMESTAMP, arg);
     if (arg)
     {
-      msg_ptr->startTimestamp = arg->value.U64;
+      msg_ptr->start_timestamp = arg->value.U64;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_VIDEORECORDINGTIMESTAMP_STOPTIMESTAMP, arg);
     if (arg)
     {
-      msg_ptr->stopTimestamp = arg->value.U64;
+      msg_ptr->stop_timestamp = arg->value.U64;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCommonStateVideoRecordingTimestamp
@@ -1026,22 +1146,30 @@ public:
 class CommonOverHeatStateOverHeatChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonOverHeatStateOverHeatChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonOverHeatStateOverHeatChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonOverHeatStateOverHeatChanged>::SharedPtr ros_pub_;
 
   CommonOverHeatStateOverHeatChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_overheatstate_overheatchanged")
+    std::string parameter_value = this->get_parameter("states/enable_overheatstate_overheatchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonOverHeatStateOverHeatChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonOverHeatStateOverHeatChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonOverHeatStateOverHeatChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonOverHeatStateOverHeatChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1056,12 +1184,12 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonOverHeatStateOverHeatChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonOverHeatStateOverHeatChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonOverHeatStateOverHeatChanged
@@ -1071,22 +1199,30 @@ public:
 class CommonOverHeatStateOverHeatRegulationChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonOverHeatStateOverHeatRegulationChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonOverHeatStateOverHeatRegulationChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonOverHeatStateOverHeatRegulationChanged>::SharedPtr ros_pub_;
 
   CommonOverHeatStateOverHeatRegulationChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_overheatstate_overheatregulationchanged")
+    std::string parameter_value = this->get_parameter("states/enable_overheatstate_overheatregulationchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonOverHeatStateOverHeatRegulationChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonOverHeatStateOverHeatRegulationChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonOverHeatStateOverHeatRegulationChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonOverHeatStateOverHeatRegulationChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1101,7 +1237,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonOverHeatStateOverHeatRegulationChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonOverHeatStateOverHeatRegulationChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1110,10 +1246,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE, arg);
     if (arg)
     {
-      msg_ptr->regulationType = arg->value.U8;
+      msg_ptr->regulation_type = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonOverHeatStateOverHeatRegulationChanged
@@ -1123,22 +1259,30 @@ public:
 class CommonMavlinkStateMavlinkFilePlayingStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonMavlinkStateMavlinkFilePlayingStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonMavlinkStateMavlinkFilePlayingStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonMavlinkStateMavlinkFilePlayingStateChanged>::SharedPtr ros_pub_;
 
   CommonMavlinkStateMavlinkFilePlayingStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mavlinkstate_mavlinkfileplayingstatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_mavlinkstate_mavlinkfileplayingstatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonMavlinkStateMavlinkFilePlayingStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonMavlinkStateMavlinkFilePlayingStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonMavlinkStateMavlinkFilePlayingStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonMavlinkStateMavlinkFilePlayingStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1153,7 +1297,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonMavlinkStateMavlinkFilePlayingStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonMavlinkStateMavlinkFilePlayingStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1179,7 +1323,7 @@ public:
       msg_ptr->type = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonMavlinkStateMavlinkFilePlayingStateChanged
@@ -1189,22 +1333,30 @@ public:
 class CommonMavlinkStateMavlinkPlayErrorStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonMavlinkStateMavlinkPlayErrorStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonMavlinkStateMavlinkPlayErrorStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonMavlinkStateMavlinkPlayErrorStateChanged>::SharedPtr ros_pub_;
 
   CommonMavlinkStateMavlinkPlayErrorStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mavlinkstate_mavlinkplayerrorstatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_mavlinkstate_mavlinkplayerrorstatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonMavlinkStateMavlinkPlayErrorStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonMavlinkStateMavlinkPlayErrorStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonMavlinkStateMavlinkPlayErrorStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonMavlinkStateMavlinkPlayErrorStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1219,7 +1371,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonMavlinkStateMavlinkPlayErrorStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonMavlinkStateMavlinkPlayErrorStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1231,7 +1383,7 @@ public:
       msg_ptr->error = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonMavlinkStateMavlinkPlayErrorStateChanged
@@ -1241,22 +1393,30 @@ public:
 class CommonMavlinkStateMissionItemExecuted : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonMavlinkStateMissionItemExecuted::Ptr msg_ptr;
+  bebop_msgs::msg::CommonMavlinkStateMissionItemExecuted::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonMavlinkStateMissionItemExecuted>::SharedPtr ros_pub_;
 
   CommonMavlinkStateMissionItemExecuted(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSIONITEMEXECUTED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_mavlinkstate_missionitemexecuted")
+    std::string parameter_value = this->get_parameter("states/enable_mavlinkstate_missionitemexecuted").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonMavlinkStateMissionItemExecuted>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonMavlinkStateMissionItemExecuted>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonMavlinkStateMissionItemExecuted::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonMavlinkStateMissionItemExecuted::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1271,7 +1431,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonMavlinkStateMissionItemExecuted());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonMavlinkStateMissionItemExecuted());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1283,7 +1443,7 @@ public:
       msg_ptr->idx = arg->value.U32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonMavlinkStateMissionItemExecuted
@@ -1293,22 +1453,30 @@ public:
 class CommonCalibrationStateMagnetoCalibrationStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStateChanged>::SharedPtr ros_pub_;
 
   CommonCalibrationStateMagnetoCalibrationStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_calibrationstate_magnetocalibrationstatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_calibrationstate_magnetocalibrationstatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCalibrationStateMagnetoCalibrationStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1323,7 +1491,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1332,31 +1500,31 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_XAXISCALIBRATION, arg);
     if (arg)
     {
-      msg_ptr->xAxisCalibration = arg->value.U8;
+      msg_ptr->x_axis_calibration = arg->value.U8;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_YAXISCALIBRATION, arg);
     if (arg)
     {
-      msg_ptr->yAxisCalibration = arg->value.U8;
+      msg_ptr->y_axis_calibration = arg->value.U8;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_ZAXISCALIBRATION, arg);
     if (arg)
     {
-      msg_ptr->zAxisCalibration = arg->value.U8;
+      msg_ptr->z_axis_calibration = arg->value.U8;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_CALIBRATIONFAILED, arg);
     if (arg)
     {
-      msg_ptr->calibrationFailed = arg->value.U8;
+      msg_ptr->calibration_failed = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCalibrationStateMagnetoCalibrationStateChanged
@@ -1366,22 +1534,30 @@ public:
 class CommonCalibrationStateMagnetoCalibrationRequiredState : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationRequiredState::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationRequiredState::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationRequiredState>::SharedPtr ros_pub_;
 
   CommonCalibrationStateMagnetoCalibrationRequiredState(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE)
   {
-    pub_enabled_ = this->get_parameter("states/enable_calibrationstate_magnetocalibrationrequiredstate")
+    std::string parameter_value = this->get_parameter("states/enable_calibrationstate_magnetocalibrationrequiredstate").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCalibrationStateMagnetoCalibrationRequiredState>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationRequiredState>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationRequiredState::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationRequiredState::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1396,7 +1572,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationRequiredState());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationRequiredState());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1408,7 +1584,7 @@ public:
       msg_ptr->required = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCalibrationStateMagnetoCalibrationRequiredState
@@ -1418,22 +1594,30 @@ public:
 class CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged>::SharedPtr ros_pub_;
 
   CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_calibrationstate_magnetocalibrationaxistocalibratechanged")
+    std::string parameter_value = this->get_parameter("states/enable_calibrationstate_magnetocalibrationaxistocalibratechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1448,7 +1632,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1460,7 +1644,7 @@ public:
       msg_ptr->axis = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged
@@ -1470,22 +1654,30 @@ public:
 class CommonCalibrationStateMagnetoCalibrationStartedChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationStartedChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStartedChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStartedChanged>::SharedPtr ros_pub_;
 
   CommonCalibrationStateMagnetoCalibrationStartedChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_calibrationstate_magnetocalibrationstartedchanged")
+    std::string parameter_value = this->get_parameter("states/enable_calibrationstate_magnetocalibrationstartedchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCalibrationStateMagnetoCalibrationStartedChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStartedChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationStartedChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStartedChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1500,7 +1692,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCalibrationStateMagnetoCalibrationStartedChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCalibrationStateMagnetoCalibrationStartedChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1512,7 +1704,7 @@ public:
       msg_ptr->started = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCalibrationStateMagnetoCalibrationStartedChanged
@@ -1522,22 +1714,30 @@ public:
 class CommonCalibrationStatePitotCalibrationStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonCalibrationStatePitotCalibrationStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonCalibrationStatePitotCalibrationStateChanged>::SharedPtr ros_pub_;
 
   CommonCalibrationStatePitotCalibrationStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_PITOTCALIBRATIONSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_calibrationstate_pitotcalibrationstatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_calibrationstate_pitotcalibrationstatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonCalibrationStatePitotCalibrationStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonCalibrationStatePitotCalibrationStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1552,7 +1752,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonCalibrationStatePitotCalibrationStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1568,10 +1768,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_PITOTCALIBRATIONSTATECHANGED_LASTERROR, arg);
     if (arg)
     {
-      msg_ptr->lastError = arg->value.U8;
+      msg_ptr->last_error = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonCalibrationStatePitotCalibrationStateChanged
@@ -1581,22 +1781,30 @@ public:
 class CommonFlightPlanStateAvailabilityStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonFlightPlanStateAvailabilityStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonFlightPlanStateAvailabilityStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonFlightPlanStateAvailabilityStateChanged>::SharedPtr ros_pub_;
 
   CommonFlightPlanStateAvailabilityStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_flightplanstate_availabilitystatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_flightplanstate_availabilitystatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonFlightPlanStateAvailabilityStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonFlightPlanStateAvailabilityStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonFlightPlanStateAvailabilityStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonFlightPlanStateAvailabilityStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1611,7 +1819,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonFlightPlanStateAvailabilityStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonFlightPlanStateAvailabilityStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1620,10 +1828,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED_AVAILABILITYSTATE, arg);
     if (arg)
     {
-      msg_ptr->AvailabilityState = arg->value.U8;
+      msg_ptr->availability_state = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonFlightPlanStateAvailabilityStateChanged
@@ -1633,22 +1841,30 @@ public:
 class CommonFlightPlanStateComponentStateListChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonFlightPlanStateComponentStateListChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonFlightPlanStateComponentStateListChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonFlightPlanStateComponentStateListChanged>::SharedPtr ros_pub_;
 
   CommonFlightPlanStateComponentStateListChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_flightplanstate_componentstatelistchanged")
+    std::string parameter_value = this->get_parameter("states/enable_flightplanstate_componentstatelistchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonFlightPlanStateComponentStateListChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonFlightPlanStateComponentStateListChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonFlightPlanStateComponentStateListChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonFlightPlanStateComponentStateListChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1663,7 +1879,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonFlightPlanStateComponentStateListChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonFlightPlanStateComponentStateListChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1679,10 +1895,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_STATE, arg);
     if (arg)
     {
-      msg_ptr->State = arg->value.U8;
+      msg_ptr->state = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonFlightPlanStateComponentStateListChanged
@@ -1692,22 +1908,30 @@ public:
 class CommonFlightPlanStateLockStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonFlightPlanStateLockStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonFlightPlanStateLockStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonFlightPlanStateLockStateChanged>::SharedPtr ros_pub_;
 
   CommonFlightPlanStateLockStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_LOCKSTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_flightplanstate_lockstatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_flightplanstate_lockstatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonFlightPlanStateLockStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonFlightPlanStateLockStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonFlightPlanStateLockStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonFlightPlanStateLockStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1722,7 +1946,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonFlightPlanStateLockStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonFlightPlanStateLockStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1731,10 +1955,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_LOCKSTATECHANGED_LOCKSTATE, arg);
     if (arg)
     {
-      msg_ptr->LockState = arg->value.U8;
+      msg_ptr->lock_state = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonFlightPlanStateLockStateChanged
@@ -1744,22 +1968,30 @@ public:
 class CommonARLibsVersionsStateControllerLibARCommandsVersion : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonARLibsVersionsStateControllerLibARCommandsVersion::Ptr msg_ptr;
+  bebop_msgs::msg::CommonARLibsVersionsStateControllerLibARCommandsVersion::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonARLibsVersionsStateControllerLibARCommandsVersion>::SharedPtr ros_pub_;
 
   CommonARLibsVersionsStateControllerLibARCommandsVersion(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION)
   {
-    pub_enabled_ = this->get_parameter("states/enable_arlibsversionsstate_controllerlibarcommandsversion")
+    std::string parameter_value = this->get_parameter("states/enable_arlibsversionsstate_controllerlibarcommandsversion").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonARLibsVersionsStateControllerLibARCommandsVersion>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonARLibsVersionsStateControllerLibARCommandsVersion>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonARLibsVersionsStateControllerLibARCommandsVersion::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonARLibsVersionsStateControllerLibARCommandsVersion::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1774,7 +2006,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonARLibsVersionsStateControllerLibARCommandsVersion());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonARLibsVersionsStateControllerLibARCommandsVersion());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1786,7 +2018,7 @@ public:
       msg_ptr->version = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonARLibsVersionsStateControllerLibARCommandsVersion
@@ -1796,22 +2028,30 @@ public:
 class CommonARLibsVersionsStateSkyControllerLibARCommandsVersion : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion::Ptr msg_ptr;
+  bebop_msgs::msg::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion>::SharedPtr ros_pub_;
 
   CommonARLibsVersionsStateSkyControllerLibARCommandsVersion(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION)
   {
-    pub_enabled_ = this->get_parameter("states/enable_arlibsversionsstate_skycontrollerlibarcommandsversion")
+    std::string parameter_value = this->get_parameter("states/enable_arlibsversionsstate_skycontrollerlibarcommandsversion").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1826,7 +2066,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1838,7 +2078,7 @@ public:
       msg_ptr->version = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonARLibsVersionsStateSkyControllerLibARCommandsVersion
@@ -1848,22 +2088,30 @@ public:
 class CommonARLibsVersionsStateDeviceLibARCommandsVersion : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonARLibsVersionsStateDeviceLibARCommandsVersion::Ptr msg_ptr;
+  bebop_msgs::msg::CommonARLibsVersionsStateDeviceLibARCommandsVersion::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonARLibsVersionsStateDeviceLibARCommandsVersion>::SharedPtr ros_pub_;
 
   CommonARLibsVersionsStateDeviceLibARCommandsVersion(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION)
   {
-    pub_enabled_ = this->get_parameter("states/enable_arlibsversionsstate_devicelibarcommandsversion")
+    std::string parameter_value = this->get_parameter("states/enable_arlibsversionsstate_devicelibarcommandsversion").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonARLibsVersionsStateDeviceLibARCommandsVersion>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonARLibsVersionsStateDeviceLibARCommandsVersion>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonARLibsVersionsStateDeviceLibARCommandsVersion::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonARLibsVersionsStateDeviceLibARCommandsVersion::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1878,7 +2126,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonARLibsVersionsStateDeviceLibARCommandsVersion());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonARLibsVersionsStateDeviceLibARCommandsVersion());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1890,7 +2138,7 @@ public:
       msg_ptr->version = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonARLibsVersionsStateDeviceLibARCommandsVersion
@@ -1900,22 +2148,30 @@ public:
 class CommonAudioStateAudioStreamingRunning : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonAudioStateAudioStreamingRunning::Ptr msg_ptr;
+  bebop_msgs::msg::CommonAudioStateAudioStreamingRunning::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonAudioStateAudioStreamingRunning>::SharedPtr ros_pub_;
 
   CommonAudioStateAudioStreamingRunning(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING)
   {
-    pub_enabled_ = this->get_parameter("states/enable_audiostate_audiostreamingrunning")
+    std::string parameter_value = this->get_parameter("states/enable_audiostate_audiostreamingrunning").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonAudioStateAudioStreamingRunning>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonAudioStateAudioStreamingRunning>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonAudioStateAudioStreamingRunning::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonAudioStateAudioStreamingRunning::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1930,7 +2186,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonAudioStateAudioStreamingRunning());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonAudioStateAudioStreamingRunning());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -1942,7 +2198,7 @@ public:
       msg_ptr->running = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonAudioStateAudioStreamingRunning
@@ -1952,22 +2208,30 @@ public:
 class CommonHeadlightsStateintensityChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonHeadlightsStateintensityChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonHeadlightsStateintensityChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonHeadlightsStateintensityChanged>::SharedPtr ros_pub_;
 
   CommonHeadlightsStateintensityChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_headlightsstate_intensitychanged")
+    std::string parameter_value = this->get_parameter("states/enable_headlightsstate_intensitychanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonHeadlightsStateintensityChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonHeadlightsStateintensityChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonHeadlightsStateintensityChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonHeadlightsStateintensityChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1982,7 +2246,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonHeadlightsStateintensityChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonHeadlightsStateintensityChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2001,7 +2265,7 @@ public:
       msg_ptr->right = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonHeadlightsStateintensityChanged
@@ -2011,22 +2275,30 @@ public:
 class CommonAnimationsStateList : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonAnimationsStateList::Ptr msg_ptr;
+  bebop_msgs::msg::CommonAnimationsStateList::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonAnimationsStateList>::SharedPtr ros_pub_;
 
   CommonAnimationsStateList(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST)
   {
-    pub_enabled_ = this->get_parameter("states/enable_animationsstate_list")
+    std::string parameter_value = this->get_parameter("states/enable_animationsstate_list").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonAnimationsStateList>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonAnimationsStateList>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonAnimationsStateList::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonAnimationsStateList::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2041,7 +2313,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonAnimationsStateList());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonAnimationsStateList());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2067,7 +2339,7 @@ public:
       msg_ptr->error = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonAnimationsStateList
@@ -2077,22 +2349,30 @@ public:
 class CommonAccessoryStateSupportedAccessoriesListChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonAccessoryStateSupportedAccessoriesListChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonAccessoryStateSupportedAccessoriesListChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonAccessoryStateSupportedAccessoriesListChanged>::SharedPtr ros_pub_;
 
   CommonAccessoryStateSupportedAccessoriesListChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_accessorystate_supportedaccessorieslistchanged")
+    std::string parameter_value = this->get_parameter("states/enable_accessorystate_supportedaccessorieslistchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonAccessoryStateSupportedAccessoriesListChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonAccessoryStateSupportedAccessoriesListChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonAccessoryStateSupportedAccessoriesListChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonAccessoryStateSupportedAccessoriesListChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2107,7 +2387,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonAccessoryStateSupportedAccessoriesListChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonAccessoryStateSupportedAccessoriesListChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2119,7 +2399,7 @@ public:
       msg_ptr->accessory = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonAccessoryStateSupportedAccessoriesListChanged
@@ -2129,22 +2409,30 @@ public:
 class CommonAccessoryStateAccessoryConfigChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonAccessoryStateAccessoryConfigChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonAccessoryStateAccessoryConfigChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonAccessoryStateAccessoryConfigChanged>::SharedPtr ros_pub_;
 
   CommonAccessoryStateAccessoryConfigChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_accessorystate_accessoryconfigchanged")
+    std::string parameter_value = this->get_parameter("states/enable_accessorystate_accessoryconfigchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonAccessoryStateAccessoryConfigChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonAccessoryStateAccessoryConfigChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonAccessoryStateAccessoryConfigChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonAccessoryStateAccessoryConfigChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2159,7 +2447,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonAccessoryStateAccessoryConfigChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonAccessoryStateAccessoryConfigChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2168,7 +2456,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_NEWACCESSORY, arg);
     if (arg)
     {
-      msg_ptr->newAccessory = arg->value.I32;
+      msg_ptr->new_accessory = arg->value.I32;
     }
 
     arg = NULL;
@@ -2178,7 +2466,7 @@ public:
       msg_ptr->error = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonAccessoryStateAccessoryConfigChanged
@@ -2188,22 +2476,30 @@ public:
 class CommonAccessoryStateAccessoryConfigModificationEnabled : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonAccessoryStateAccessoryConfigModificationEnabled::Ptr msg_ptr;
+  bebop_msgs::msg::CommonAccessoryStateAccessoryConfigModificationEnabled::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonAccessoryStateAccessoryConfigModificationEnabled>::SharedPtr ros_pub_;
 
   CommonAccessoryStateAccessoryConfigModificationEnabled(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_accessorystate_accessoryconfigmodificationenabled")
+    std::string parameter_value = this->get_parameter("states/enable_accessorystate_accessoryconfigmodificationenabled").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonAccessoryStateAccessoryConfigModificationEnabled>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonAccessoryStateAccessoryConfigModificationEnabled>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonAccessoryStateAccessoryConfigModificationEnabled::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonAccessoryStateAccessoryConfigModificationEnabled::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2218,7 +2514,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonAccessoryStateAccessoryConfigModificationEnabled());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonAccessoryStateAccessoryConfigModificationEnabled());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2230,7 +2526,7 @@ public:
       msg_ptr->enabled = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonAccessoryStateAccessoryConfigModificationEnabled
@@ -2240,22 +2536,30 @@ public:
 class CommonChargerStateMaxChargeRateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonChargerStateMaxChargeRateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonChargerStateMaxChargeRateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonChargerStateMaxChargeRateChanged>::SharedPtr ros_pub_;
 
   CommonChargerStateMaxChargeRateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_chargerstate_maxchargeratechanged")
+    std::string parameter_value = this->get_parameter("states/enable_chargerstate_maxchargeratechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonChargerStateMaxChargeRateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonChargerStateMaxChargeRateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonChargerStateMaxChargeRateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonChargerStateMaxChargeRateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2270,7 +2574,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonChargerStateMaxChargeRateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonChargerStateMaxChargeRateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2282,7 +2586,7 @@ public:
       msg_ptr->rate = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonChargerStateMaxChargeRateChanged
@@ -2292,22 +2596,30 @@ public:
 class CommonChargerStateCurrentChargeStateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonChargerStateCurrentChargeStateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonChargerStateCurrentChargeStateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonChargerStateCurrentChargeStateChanged>::SharedPtr ros_pub_;
 
   CommonChargerStateCurrentChargeStateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_chargerstate_currentchargestatechanged")
+    std::string parameter_value = this->get_parameter("states/enable_chargerstate_currentchargestatechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonChargerStateCurrentChargeStateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonChargerStateCurrentChargeStateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonChargerStateCurrentChargeStateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonChargerStateCurrentChargeStateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2322,7 +2634,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonChargerStateCurrentChargeStateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonChargerStateCurrentChargeStateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2341,7 +2653,7 @@ public:
       msg_ptr->phase = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonChargerStateCurrentChargeStateChanged
@@ -2351,22 +2663,30 @@ public:
 class CommonChargerStateLastChargeRateChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonChargerStateLastChargeRateChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonChargerStateLastChargeRateChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonChargerStateLastChargeRateChanged>::SharedPtr ros_pub_;
 
   CommonChargerStateLastChargeRateChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_chargerstate_lastchargeratechanged")
+    std::string parameter_value = this->get_parameter("states/enable_chargerstate_lastchargeratechanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonChargerStateLastChargeRateChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonChargerStateLastChargeRateChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonChargerStateLastChargeRateChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonChargerStateLastChargeRateChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2381,7 +2701,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonChargerStateLastChargeRateChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonChargerStateLastChargeRateChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2393,7 +2713,7 @@ public:
       msg_ptr->rate = arg->value.I32;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonChargerStateLastChargeRateChanged
@@ -2403,22 +2723,30 @@ public:
 class CommonChargerStateChargingInfo : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonChargerStateChargingInfo::Ptr msg_ptr;
+  bebop_msgs::msg::CommonChargerStateChargingInfo::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonChargerStateChargingInfo>::SharedPtr ros_pub_;
 
   CommonChargerStateChargingInfo(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO)
   {
-    pub_enabled_ = this->get_parameter("states/enable_chargerstate_charginginfo")
+    std::string parameter_value = this->get_parameter("states/enable_chargerstate_charginginfo").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonChargerStateChargingInfo>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonChargerStateChargingInfo>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonChargerStateChargingInfo::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonChargerStateChargingInfo::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2433,7 +2761,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonChargerStateChargingInfo());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonChargerStateChargingInfo());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2463,10 +2791,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_FULLCHARGINGTIME, arg);
     if (arg)
     {
-      msg_ptr->fullChargingTime = arg->value.U8;
+      msg_ptr->full_charging_time = arg->value.U8;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonChargerStateChargingInfo
@@ -2476,22 +2804,30 @@ public:
 class CommonRunStateRunIdChanged : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonRunStateRunIdChanged::Ptr msg_ptr;
+  bebop_msgs::msg::CommonRunStateRunIdChanged::Ptr msg_ptr;
 
 public:
+  rclcpp::Publisher<bebop_msgs::msg::CommonRunStateRunIdChanged>::SharedPtr ros_pub_;
 
   CommonRunStateRunIdChanged(const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED)
   {
-    pub_enabled_ = this->get_parameter("states/enable_runstate_runidchanged")
+    std::string parameter_value = this->get_parameter("states/enable_runstate_runidchanged").as_string();
+
+    if (parameter_value == "true" || parameter_value == "1") {
+        pub_enabled_ = true;
+    } else {
+        pub_enabled_ = false;
+    }
+    
     if (pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = this->create_publisher<bebop_msgs::CommonRunStateRunIdChanged>(topic, 10, true);
+      ros_pub_ = this->create_publisher<bebop_msgs::msg::CommonRunStateRunIdChanged>(topic, 10);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonRunStateRunIdChanged::ConstPtr GetDataCstPtr() const
+  bebop_msgs::msg::CommonRunStateRunIdChanged::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -2506,7 +2842,7 @@ public:
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonRunStateRunIdChanged());
+    msg_ptr.reset(new ::bebop_msgs::msg::CommonRunStateRunIdChanged());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
@@ -2515,10 +2851,10 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNID, arg);
     if (arg)
     {
-      msg_ptr->runId = arg->value.String;
+      msg_ptr->run_id = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_->publish(*msg_ptr);
   }
 
 };  // CommonRunStateRunIdChanged

@@ -260,7 +260,7 @@ def generate_states(xml_filename):
                 # C++ class
                 arg_list.append({
                     "cpp_class_arg_key": cpp_class_dict_key + "_" + arg.attrib["name"].upper(),
-                    "cpp_class_arg_name": f_name,
+                    "cpp_class_arg_name": convert_to_snake_case(f_name),
                     "cpp_class_arg_sdk_type": BEBOP_TYPE_MAP[arg.attrib.get("type", "bool")]
                     })
 

@@ -128,8 +128,13 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key,
       callback_map_t::iterator it = bebop_ptr->callback_map_.find(cmd_key);
       if (it != bebop_ptr->callback_map_.end())
       {
+        rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>();
+        auto now = clock->now();  // Get the current time
+        auto now_sec = now.seconds();  // Get the time in seconds
+        rclcpp::Time ros_time(static_cast<int64_t>(now_sec * 1000000000));
+
         // TODO(mani-monaj): Check if we can find the time from the packets
-        it->second->Update(element_dict_ptr->arguments, ros::Time::now());
+        it->second->Update(element_dict_ptr->arguments, ros_time);
       }
     }
   }
@@ -207,7 +212,7 @@ eARCONTROLLER_ERROR Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, vo
 }
 
 
-Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback):
+Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback): 
   is_connected_(false),
   is_streaming_started_(false),
   device_ptr_(NULL),
@@ -233,7 +238,7 @@ Bebop::~Bebop()
   if (device_controller_ptr_) ARCONTROLLER_Device_Delete(&device_controller_ptr_);
 }
 
-void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::string& bebop_ip)
+void Bebop::Connect(const std::string& bebop_ip)
 {
   try
   {

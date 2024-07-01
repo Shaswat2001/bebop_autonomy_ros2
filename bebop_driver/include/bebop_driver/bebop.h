@@ -39,6 +39,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <boost/atomic.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition_variable.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 extern "C"
 {
@@ -50,10 +51,6 @@ extern "C"
 extern "C"
 {
   struct ARDISCOVERY_Device_t;
-}
-namespace ros
-{
-  class NodeHandle;
 }
 
 namespace bebop_driver
@@ -144,7 +141,7 @@ public:
   explicit Bebop(ARSAL_Print_Callback_t custom_print_callback = 0);
   ~Bebop();
 
-  void Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::string& bebop_ip = "192.168.42.1");
+  void Connect(const std::string& bebop_ip = "192.168.42.1");
   void StartStreaming();
 
   // Disable all data callback and streaming (nothrow)

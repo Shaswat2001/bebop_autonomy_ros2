@@ -22,35 +22,13 @@ OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTE
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <string>
-#include <vector>
-#include <algorithm>
+#include <rclcpp/rclcpp.hpp>
+#include <bebop_driver/bebop_driver_component.h>
 
-#include <ros/ros.h>
-#include <nodelet/loader.h>
-
-int main(int argc, char* argv[])
+int main(int argc, char * argv[])
 {
-  ros::init(argc, argv, "bebop_driver_node", ros::init_options::NoSigintHandler);
-  nodelet::Loader nll;
-
-  nodelet::M_string remap(ros::names::getRemappings());
-  nodelet::V_string nargv;
-  const std::string nl_name = ros::this_node::getName();
-  nll.load(nl_name, "bebop_driver/BebopDriverNodelet", remap, nargv);
-
-  const std::vector<std::string>& loaded_nodelets = nll.listLoadedNodelets();
-  if (std::find(loaded_nodelets.begin(),
-                loaded_nodelets.end(),
-                nl_name) == loaded_nodelets.end())
-  {
-    // Nodelet OnInit() failed
-    ROS_FATAL("bebop_driver nodelet failed to load.");
-    return 1;
-  }
-
-  // It reaches here when OnInit() succeeds
-  ROS_INFO("bebop_driver nodelet loaded.");
-  ros::spin();
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<bebop_driver::BebopDriverComponent>());
+  rclcpp::shutdown();
   return 0;
 }
