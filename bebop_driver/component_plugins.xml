@@ -1,0 +1,3 @@
+<library path="lib/libbebop_driver_component">
+  <class name="bebop_driver::BebopDriverComponent" type="bebop_driver::BebopDriverComponent"/>
+</library>

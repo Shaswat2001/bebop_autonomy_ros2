@@ -212,7 +212,7 @@ eARCONTROLLER_ERROR Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, vo
 }
 
 
-Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback): 
+Bebop::Bebop(): 
   is_connected_(false),
   is_streaming_started_(false),
   device_ptr_(NULL),
@@ -224,8 +224,6 @@ Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback):
 //  out_file("/tmp/ts.txt")
 {
   // Redirect all calls to AR_PRINT_* to this function if provided
-  if (custom_print_callback)
-    ARSAL_Print_SetCallback(custom_print_callback);
 
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Bebop Cnstr()");
 }

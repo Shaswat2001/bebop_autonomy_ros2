@@ -15,7 +15,7 @@ def generate_launch_description():
                 ComposableNode(
                     package='bebop_driver',
                     plugin='bebop_driver::BebopDriverComponent',
-                    name='bebopcomponent')
+                    name='bebop_driver_component')
             ],
             output='screen',
     )

@@ -63,7 +63,7 @@ int BebopPrintToROSLogCB(eARSAL_PRINT_LEVEL level, const char *tag, const char *
 }  // namespace util
 
 BebopDriverComponent::BebopDriverComponent(const rclcpp::NodeOptions & options)
- : Node("bebop_driver_node",options), bebop_ptr_(new bebop_driver::Bebop(util::BebopPrintToROSLogCB))
+ : Node("bebop_driver_node",options), bebop_ptr_(new bebop_driver::Bebop())
 {
     onInit();
 }
@@ -702,6 +702,6 @@ BebopDriverComponent::~BebopDriverComponent()
 
 }  // namespace bebop_driver
 
-#include <rclcpp_components/register_node_macro.hpp>
+#include "rclcpp_components/register_node_macro.hpp"
 
 RCLCPP_COMPONENTS_REGISTER_NODE(bebop_driver::BebopDriverComponent)

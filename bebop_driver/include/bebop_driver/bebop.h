@@ -138,7 +138,7 @@ public:
   inline bool IsConnected() const {return is_connected_;}
   inline bool IsStreamingStarted() const {return is_streaming_started_;}
 
-  explicit Bebop(ARSAL_Print_Callback_t custom_print_callback = 0);
+  explicit Bebop();
   ~Bebop();
 
   void Connect(const std::string& bebop_ip = "192.168.42.1");
